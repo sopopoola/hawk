@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Versionaware
-Bundle-SymbolicName: org.hawk.versionaware;singleton:=true
+Bundle-SymbolicName: hawk;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: org.hawk.versionaware
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
