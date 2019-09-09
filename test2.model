@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ASCII"?>
+<BlockDiagram:BlockDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:BlockDiagram="http://www.ni2.com/LabVIEW.VI" xmi:id="__K3Z0M-GEemRxc4iLbeMCQ">
+  <MethodCall xmi:id="_DP8Y0M-HEemRxc4iLbeMCQ">
+    <p.MethodDeclaration xmi:id="_EZeMsM-HEemRxc4iLbeMCQ"/>
+    <Terminal xmi:id="_GNuYkM-HEemRxc4iLbeMCQ"/>
+  </MethodCall>
+</BlockDiagram:BlockDiagram>

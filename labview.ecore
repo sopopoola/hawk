@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="BlockDiagram" nsURI="http://www.ni.com/LabVIEW.VI">
+  <eClassifiers xsi:type="ecore:EClass" name="Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Bounds" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GroupObject" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="DataAccessor" upperBound="-1"
+        eType="#//DataAccessor" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="NodeLabel" upperBound="-1"
+        eType="#//NodeLabel" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Literal" upperBound="-1"
+        eType="#//Literal" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Wire" upperBound="-1" eType="#//Wire"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="MethodCall" upperBound="-1"
+        eType="#//MethodCall" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Comment" upperBound="-1"
+        eType="#//Comment" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="WireComment" upperBound="-1"
+        eType="#//WireComment" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="RightShiftRegister" upperBound="-1"
+        eType="#//RightShiftRegister" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="LeftShiftRegister" upperBound="-1"
+        eType="#//LeftShiftRegister" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="WhileLoop" upperBound="-1"
+        eType="#//WhileLoop" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EventStructure" upperBound="-1"
+        eType="#//EventStructure" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="CaseStructure" upperBound="-1"
+        eType="#//CaseStructure" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="PropertyNode" upperBound="-1"
+        eType="#//PropertyNode" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="VariantToData" upperBound="-1"
+        eType="#//VariantToData" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ClusterLiteral" upperBound="-1"
+        eType="#//ClusterLiteral" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="MergeErrors" upperBound="-1"
+        eType="#//MergeErrors" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ReleaseQueue" upperBound="-1"
+        eType="#//ReleaseQueue" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="GenerateUserEvent" upperBound="-1"
+        eType="#//GenerateUserEvent" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="FormatIntoString" upperBound="-1"
+        eType="#//FormatIntoString" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="RegisterForEvents" upperBound="-1"
+        eType="#//RegisterForEvents" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="UnregisterForEvents" upperBound="-1"
+        eType="#//UnregisterForEvents" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="CreateUserEvent" upperBound="-1"
+        eType="#//CreateUserEvent" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="DestroyUserEvent" upperBound="-1"
+        eType="#//DestroyUserEvent" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BlockDiagram" eSuperTypes="#//GroupObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="file" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Comment" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="SizeToText" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="p.Text" upperBound="-1"
+        eType="#//p.Text" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="p.ExpandedWidth" upperBound="-1"
+        eType="#//p.ExpandedWidth" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="p.Point" upperBound="-1"
+        eType="#//p.Point" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="WireComment" eSuperTypes="#//Comment">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="AttachedTo" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeObject" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DataType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ControlDefinitionChecksum"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PropertyNode" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="HasErrorTerminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="InstanceDataType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Mode" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Template" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="PropertyItemTerminal" upperBound="-1"
+        eType="#//PropertyItemTerminal" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="p" eSuperTypes="#//Object"/>
+  <eClassifiers xsi:type="ecore:EClass" name="p.Text" eSuperTypes="#//p"/>
+  <eClassifiers xsi:type="ecore:EClass" name="p.Data" eSuperTypes="#//p">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Cluster" upperBound="-1"
+        eType="#//Cluster" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="p.ExpandedWidth" eSuperTypes="#//p"/>
+  <eClassifiers xsi:type="ecore:EClass" name="p.Point" eSuperTypes="#//p"/>
+  <eClassifiers xsi:type="ecore:EClass" name="p.TypeDefinitionTargets" eSuperTypes="#//p">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="TypeDefinitionTarget" upperBound="-1"
+        eType="#//TypeDefinitionTarget" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TypeDefinitionTarget" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="TargetName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Behavior" eSuperTypes="#//Object"/>
+  <eClassifiers xsi:type="ecore:EClass" name="StringBehavior" eSuperTypes="#//Behavior">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="TextDisplayMode" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="SizeToContent" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BooleanBehavior" eSuperTypes="#//Behavior"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NumericBehavior" eSuperTypes="#//Behavior">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Interpretation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ValueFormatter" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Wire" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Joints" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Terminal" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DataType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Direction" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Hotspot" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Usage" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeLabel" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="p.Text" upperBound="-1"
+        eType="#//p" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="p.Data" upperBound="-1"
+        eType="#//p" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="AttachedTo" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Visible" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="IsReadOnly" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Literal" eSuperTypes="#//NodeObject">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="p.Data" upperBound="-1"
+        eType="#//p.Data" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="p.Text" upperBound="-1"
+        eType="#//p.Text" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="StringBehavior" upperBound="-1"
+        eType="#//StringBehavior" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="BooleanBehavior" upperBound="-1"
+        eType="#//BooleanBehavior" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="NumericBehavior" upperBound="-1"
+        eType="#//NumericBehavior" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DataType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="FixedConstantFacade" upperBound="-1"
+        eType="#//FixedConstantFacade" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DataAccessor" eSuperTypes="#//NodeObject">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Object" eType="#//Object"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DataItem" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Terminal" upperBound="-1"
+        eType="#//Terminal" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MethodCall" eSuperTypes="#//NodeObject">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="p.MethodDeclaration" upperBound="-1"
+        eType="#//p.MethodDeclaration" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Terminal" upperBound="-1"
+        eType="#//Terminal" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ResolveFailedHint" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Signature" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Target" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MethodDeclaration" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Parameter" upperBound="-1"
+        eType="#//Parameter" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="p.MethodDeclaration" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="MethodDeclaration" upperBound="-1"
+        eType="#//MethodDeclaration" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Parameter" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Desc" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="WhileLoop" eSuperTypes="#//GroupObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DiagramId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="LoopCondition" eType="#//LoopCondition"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="LoopIteration" eType="#//LoopIteration"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="LoopTunnel" upperBound="-1"
+        eType="#//LoopTunnel" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LoopCondition" eSuperTypes="#//Object"/>
+  <eClassifiers xsi:type="ecore:EClass" name="LoopIteration" eSuperTypes="#//Object"/>
+  <eClassifiers xsi:type="ecore:EClass" name="LoopTunnel" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Docking" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Terminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EventStructure" instanceTypeName="EventStructure"
+      eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="UserSelectorBounds" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Selected" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EventStructure.LeftDynamicEventRegistration"
+        upperBound="-1" eType="#//EventStructure.LeftDynamicEventRegistration" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EventStructure.RightDynamicEventRegistration"
+        upperBound="-1" eType="#//EventStructure.RightDynamicEventRegistration" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EventStructure.EventCase"
+        upperBound="-1" eType="#//EventStructure.EventCase" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EventStructure.Tunnel"
+        upperBound="-1" eType="#//EventStructure.Tunnel" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EventStructure.LeftDynamicEventRegistration"
+      eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Docking" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DynamicEventsType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Terminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EventStructure.RightDynamicEventRegistration"
+      eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DynamicEventsType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Docking" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Terminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EventStructure.EventCase" eSuperTypes="#//GroupObject">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EventStructure.EventData"
+        eType="#//EventStructure.EventData" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EventStructure.AttachedEvent"
+        eType="#//EventStructure.AttachedEvent" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EventStructure.EventFilter"
+        eType="#//EventStructure.EventFilter" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EventStructure.AttachedEvent" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="EventId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="EventIndex" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="EventName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="EventSourceType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="EventType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="SourceContent" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="SourceName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EventStructure.EventData" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="HasErrorTerminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="InstanceDataType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Mode" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="PropertyPathsInSemanticOrder"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Template" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="PropertyItemTerminal" upperBound="-1"
+        eType="#//PropertyItemTerminal" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EventPropertyItemTerminal"
+        upperBound="-1" eType="#//EventPropertyItemTerminal" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EventStructure.EventFilter" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="FilterData" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="HasErrorTerminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="InstanceDataType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Mode" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="PropertyPathsInSemanticOrder"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="PropertyItemTerminal" upperBound="-1"
+        eType="#//PropertyItemTerminal" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EventStructure.Tunnel" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Docking" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Terminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DefaultIfUnwired" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="LinkedTunnel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PropertyItemTerminal" eSuperTypes="#//Terminal">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Path" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="PathElementMemberKinds"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Action" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EventPropertyItemTerminal" eSuperTypes="#//PropertyItemTerminal"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RightShiftRegister" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Docking" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Terminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LeftShiftRegister" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Docking" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Terminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="RightRegister" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CaseStructure" eSuperTypes="#//NodeObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DataType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Default" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="IgnoreUpperLowerCase" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="UserSelectorBounds" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Selected" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="CaseStructure.Case" upperBound="-1"
+        eType="#//CaseStructure.Case" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="CaseStructure.Selector"
+        upperBound="-1" eType="#//CaseStructure.Selector" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="CaseStructure.Tunnel" upperBound="-1"
+        eType="#//CaseStructure.Tunnel" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CaseStructure.Case" eSuperTypes="#//GroupObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Pattern" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CaseStructure.Selector" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Docking" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Terminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CaseStructure.Tunnel" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Docking" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Terminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="LinkedTunnel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DefaultIfUnwired" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FixedConstantFacade" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Facade" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="VariantToData" eSuperTypes="#//Object"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ClusterLiteral" eSuperTypes="#//GroupObject #//NodeObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DataType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ControlDefinitionChecksum"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="p.Data" upperBound="-1"
+        eType="#//p.Data" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="p.TypeDefinitionTargets"
+        upperBound="-1" eType="#//p.TypeDefinitionTargets" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ClusterBehavior" upperBound="-1"
+        eType="#//ClusterBehavior" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Cluster" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field1" eType="#//Field"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field2" eType="#//Field"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field3" eType="#//Field"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field4" eType="#//Field"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field5" eType="#//Field"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field6" eType="#//Field"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field7" eType="#//Field"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field8" eType="#//Field"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field9" eType="#//Field"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field10" eType="#//Field"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClusterBehavior" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="AutoArrange" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MergeErrors" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Terminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ReleaseQueue" eSuperTypes="#//Object"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenerateUserEvent" eSuperTypes="#//Object"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FormatIntoString" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Terminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UnregisterForEvents" eSuperTypes="#//Object"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RegisterForEvents" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Template" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EventSourceTerminal" upperBound="-1"
+        eType="#//EventSourceTerminal" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EventSourceTerminal" eSuperTypes="#//Terminal">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="SelectedEventName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DestroyUserEvent" eSuperTypes="#//Object"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CreateUserEvent" eSuperTypes="#//NodeObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="EventName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Field" eSuperTypes="#//Object"/>
+</ecore:EPackage>

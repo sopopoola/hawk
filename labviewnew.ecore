@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="BlockDiagram" nsURI="http://www.ni2.com/LabVIEW.VI">
+  <eClassifiers xsi:type="ecore:EClass" name="Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BlockDiagram">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="file" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="MethodCall" upperBound="-1"
+        eType="#//MethodCall" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeObject" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Label" eType="#//NodeLabel"
+        eOpposite="#//NodeLabel/Attached%20To"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="p" eSuperTypes="#//Object"/>
+  <eClassifiers xsi:type="ecore:EClass" name="p.Text" eSuperTypes="#//p"/>
+  <eClassifiers xsi:type="ecore:EClass" name="p.Data" eSuperTypes="#//p"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Behavior" eSuperTypes="#//Object"/>
+  <eClassifiers xsi:type="ecore:EClass" name="StringBehavior" eSuperTypes="#//Behavior">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="TextDisplayMode" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BooleanBehavior" eSuperTypes="#//Behavior"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Wire" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Joints" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Terminal">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DataType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Direction" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeLabel" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Attached To" eType="#//NodeObject"
+        eOpposite="#//NodeObject/Label"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="p" upperBound="-1" eType="#//p"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Literal" eSuperTypes="#//NodeObject">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="p" upperBound="-1" eType="#//p"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Behavior" upperBound="-1"
+        eType="#//Behavior" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DataAccessor" eSuperTypes="#//NodeObject">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Object" eType="#//Object"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MethodCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="p.MethodDeclaration" upperBound="-1"
+        eType="#//p.MethodDeclaration" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Terminal" upperBound="-1"
+        eType="#//Terminal" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MethodDeclaration">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Parameter" upperBound="-1"
+        eType="#//Parameter" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="p.MethodDeclaration">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="MethodDeclaration" upperBound="-1"
+        eType="#//p.MethodDeclaration" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Parameter">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Desc" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>

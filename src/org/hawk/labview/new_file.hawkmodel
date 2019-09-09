@@ -1,0 +1,18 @@
+#
+#Tue Sep 03 13:55:30 CDT 2019
+hawk.subscriptionDurability=DEFAULT
+hawk.repository=*
+hawk.pageSize=0
+hawk.split=true
+hawk.query=
+hawk.username=
+hawk.subscribe=false
+hawk.url=http\://127.0.0.1\:8080/thrift/hawk/tuple
+hawk.instance=instance_1
+hawk.queryLanguage=
+hawk.thriftProtocol=TUPLE
+hawk.defaultNamespaces=http\://buildingsmart.ifc2x3tc1.ecore
+hawk.files=*
+hawk.password=
+hawk.loadingMode=GREEDY
+hawk.clientID=student
