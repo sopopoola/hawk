@@ -188,6 +188,7 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 		parseQuery(query, context, q, module);
 		return q.runQuery(module);
 	}
+	
 	public void save() throws Exception {
 		File f = new File("C:\\Users\\student\\Documents\\eclipse\\runtime-EclipseApplication\\Hawk\\model\\test.localhawkmodel");
 		File dest = new File(f.getAbsolutePath()+".xmi");

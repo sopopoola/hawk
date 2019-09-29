@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ASCII"?>
+<BlockDiagram:BlockDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:BlockDiagram="http://www.ni.com/LabVIEW.VI" Id="acd15747dc7443edbb21f502473cf08e">
+  <MethodCall Id="2791cc99e54c437183d21e5853b48fa7" Bounds="220 130 40 40" ResolveFailedHint="&quot;C:\\Users\\student\\AppData\\Local\\Temp\\NI.Temp\\LabVIEW NXG 3.1\\UP7ae7eefc-35fa-44a7-a12c-91c2dd7a4af3\\support\\Message Queue\\Create All Message Queues.gvi&quot;" Signature="@2fc6ab405f774fb2913589e38cb35635" Target="Create All Message Queues.gvi">
+    <p.MethodDeclaration>
+      <MethodDeclaration>
+        <Parameter xsi:type="BlockDiagram:Terminal" Id="L3" DataType="Error" Direction="Input" Hotspot="0 35"/>
+        <Parameter xsi:type="BlockDiagram:Terminal" Id="R0" DataType="@21aa65d43fd047a4a6269c77b80e4fe2" Direction="Output" Hotspot="40 5"/>
+        <Parameter xsi:type="BlockDiagram:Terminal" Id="R3" DataType="Error" Direction="Output" Hotspot="40 35"/>
+      </MethodDeclaration>
+    </p.MethodDeclaration>
+    <Terminal Id="L3" DataType="Error" Direction="Input" Hotspot="0 35"/>
+    <Terminal Id="R0" DataType="@21aa65d43fd047a4a6269c77b80e4fe2" Direction="Output" Hotspot="40 5"/>
+    <Terminal Id="R3" DataType="Error" Direction="Output" Hotspot="40 35"/>
+  </MethodCall>
+</BlockDiagram:BlockDiagram>

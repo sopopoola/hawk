@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="ASCII"?>
-<BlockDiagram:BlockDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:BlockDiagram="http://www.ni2.com/LabVIEW.VI" xmi:id="__K3Z0M-GEemRxc4iLbeMCQ">
-  <MethodCall xmi:id="_DP8Y0M-HEemRxc4iLbeMCQ">
-    <p.MethodDeclaration xmi:id="_EZeMsM-HEemRxc4iLbeMCQ"/>
-    <Terminal xmi:id="_GNuYkM-HEemRxc4iLbeMCQ"/>
-  </MethodCall>
+<BlockDiagram:BlockDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:BlockDiagram="http://www.ni.com/LabVIEW.VI" xmi:id="_8ZQksNdkEempB_JxyUqlJA">
+  <Object xsi:type="BlockDiagram:MethodCall" xmi:id="_j8DZgNdlEempB_JxyUqlJA">
+    <Object xsi:type="BlockDiagram:Terminal" xmi:id="_laBMUNdlEempB_JxyUqlJA" Id="567" DataType="south"/>
+    <Object xsi:type="BlockDiagram:Terminal" xmi:id="_md8ugNdlEempB_JxyUqlJA"/>
+    <Object xsi:type="BlockDiagram:Terminal" xmi:id="_Cf9AsNdmEempB_JxyUqlJA"/>
+  </Object>
 </BlockDiagram:BlockDiagram>

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -68,7 +69,7 @@ public class LabviewModelResourceFactory implements IModelResourceFactory {
 		ResourceSet rs = new ResourceSetImpl();
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
 		Resource r = rs.createResource(URI.createFileURI(file.getAbsolutePath()));
-		System.out.println("contents");
+		//System.out.println("contents");
 		r.load(null);
 		
 		System.out.println(r.getContents());
@@ -87,16 +88,19 @@ public class LabviewModelResourceFactory implements IModelResourceFactory {
 	@Override
 	public boolean canParse(File f) {
 		//return f.getName().endsWith(".giv") && f.getName().startsWith("log");
-		return f.getName().endsWith(".gvi"); 
+		return (f.getName().endsWith(".gvi") || f.getName().endsWith(".gviweb")) ; 
 	}
 
 	@Override
 	public Collection<String> getModelExtensions() {
-		return Collections.singletonList(".gvi");
+		//return Collections.singletonList(".gvi");
+		return Arrays.asList(".gvi",".gviweb");
 	}
 	public static File localParse(File file) throws ParserConfigurationException, IOException, SAXException {
-		File f= new File(getFileName(file.getName()));
+		File t = new File("");
+		File f= new File(t.getAbsoluteFile()+"/newfiles/"+getFileName(file.getName()));
 		System.out.println("file parser is called");
+		System.out.println(f.getAbsolutePath());
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	    //factory.setValidating(true);
 	    factory.setIgnoringElementContentWhitespace(true);
@@ -109,8 +113,8 @@ public class LabviewModelResourceFactory implements IModelResourceFactory {
 	   // ((Element)node).setAttribute("file", file.getAbsolutePath());
 	    try {
 			//System.out.println(nodeToString(node));
-			PrintWriter writer = new PrintWriter(f.getName(), "UTF-8");
-			System.out.println(f.getAbsolutePath());
+			PrintWriter writer = new PrintWriter(f, "UTF-8");
+			//System.out.println(f.getAbsolutePath());
 			
 			writer.println(nodeToString(node));
 			
