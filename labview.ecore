@@ -116,6 +116,8 @@
         eType="#//Arrays" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="BuildArray" upperBound="-1"
         eType="#//Arrays" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="BuildIndexAndBundleClusterArray"
+        upperBound="-1" eType="#//Arrays" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="BuildCluster" upperBound="-1"
         eType="#//Arrays" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="AddArrayElements" upperBound="-1"
@@ -156,6 +158,8 @@
         eType="#//Object" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="IsNotEqualTo0" upperBound="-1"
         eType="#//Object" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="IsEqualTo0" upperBound="-1"
+        eType="#//Object" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ScanFromString" upperBound="-1"
         eType="#//Strings" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ToByteInteger" upperBound="-1"
@@ -163,6 +167,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="OrArrayElements" upperBound="-1"
         eType="#//Boolean" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="Sort1DArray" upperBound="-1"
+        eType="#//Arrays" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Search1DArray" upperBound="-1"
         eType="#//Arrays" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="StripPath" upperBound="-1"
         eType="#//Object" containment="true"/>
@@ -172,6 +178,46 @@
         upperBound="-1" eType="#//Object" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ListFolder" upperBound="-1"
         eType="#//Object" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="NumberToDecimalString"
+        upperBound="-1" eType="#//Strings" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="GetCurrentTime" ordered="false"
+        upperBound="-1" eType="#//Object" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="NumberToFractionalString"
+        upperBound="-1" eType="#//Object" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="GetDateAndTimeString" upperBound="-1"
+        eType="#//Object" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ArrayMaxAndMin" upperBound="-1"
+        eType="#//Arrays" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ToTimeStamp" upperBound="-1"
+        eType="#//Object" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="TimeStampSubtract" upperBound="-1"
+        eType="#//Object" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ToLongInteger" upperBound="-1"
+        eType="#//Object" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="FormatDateTimeString" upperBound="-1"
+        eType="#//Object" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ControlReference" upperBound="-1"
+        eType="#//ControlReference" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="OpaqueRefnumLiteral" upperBound="-1"
+        eType="#//OpaqueRefnumLiteral" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="IsFirstCall" upperBound="-1"
+        eType="#//Object" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="VariantToFlattenedByteArray"
+        upperBound="-1" eType="#//Object" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="AbsoluteValue" upperBound="-1"
+        eType="#//Object" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ComplexToRealImaginary"
+        upperBound="-1" eType="#//Object" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="PlaceholderNode" upperBound="-1"
+        eType="#//PlaceholderNode" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="MatchPattern" upperBound="-1"
+        eType="#//Object" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="BuildPath" upperBound="-1"
+        eType="#//Object" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Reverse1DArray" upperBound="-1"
+        eType="#//Arrays" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="VariantToFlattenedByteArray"
+        upperBound="-1" eType="#//Arrays" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BlockDiagram" eSuperTypes="#//GroupObject">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
@@ -209,6 +255,13 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="p.TypeDefinitionTargets"
         upperBound="-1" eType="#//p.TypeDefinitionTargets" containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PlaceholderNode" eSuperTypes="#//NodeObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="IconHeight" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="IconWidth" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="OriginalNodeName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Terminal" upperBound="-1"
+        eType="#//Terminal" containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="p" eSuperTypes="#//Object"/>
   <eClassifiers xsi:type="ecore:EClass" name="p.Text" eSuperTypes="#//p"/>
   <eClassifiers xsi:type="ecore:EClass" name="p.Data" eSuperTypes="#//p">
@@ -237,6 +290,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Interpretation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="ValueFormatter" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="RadixVisibility" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Radix" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ArrayBehavior" eSuperTypes="#//Behavior">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="ElementType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -269,6 +323,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Visible" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="IsReadOnly" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="SizeToText" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Literal" eSuperTypes="#//NodeObject">
     <eStructuralFeatures xsi:type="ecore:EReference" name="p.Data" upperBound="-1"
@@ -298,6 +353,10 @@
         eType="#//FixedConstantFacade" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="DockedConstantFacade" upperBound="-1"
         eType="#//FixedConstantFacade" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OpaqueRefnumLiteral" eSuperTypes="#//Literal">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="OpaqueRefnumLiteralBehavior"
+        upperBound="-1" eType="#//Object" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ArrayLiteral" eSuperTypes="#//Literal">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ArrayBehavior" upperBound="-1"
@@ -600,6 +659,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="Field" eSuperTypes="#//Object">
     <eStructuralFeatures xsi:type="ecore:EReference" name="Cluster" upperBound="-1"
         eType="#//Cluster" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Array" upperBound="-1"
+        eType="#//Arrays" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RandomNumber" eSuperTypes="#//Object"/>
   <eClassifiers xsi:type="ecore:EClass" name="Math" eSuperTypes="#//Object">
@@ -613,8 +674,11 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Boolean" eSuperTypes="#//Object">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Terminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="InvertedTerminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Compare" eSuperTypes="#//Object"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Compare" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ComparisonMode" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Arrays" eSuperTypes="#//Object">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Terminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="VerticalChunkCount" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -623,6 +687,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Lengths" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="CanToggle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Rank" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ConcatenateInputs" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="BinaryElements" upperBound="-1"
         eType="#//Object" containment="true"/>
   </eClassifiers>
@@ -663,5 +728,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="ValueType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="p.Value" upperBound="-1"
         eType="#//Object" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ControlReference" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="SourceControl" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>
