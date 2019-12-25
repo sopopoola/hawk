@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="C:/Users/student/git/org.eclipse.epsilon/plugins/org.eclipse.epsilon.evl.engine/src"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.hawk.core"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

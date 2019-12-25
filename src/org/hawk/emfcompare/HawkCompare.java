@@ -1,23 +1,29 @@
 package org.hawk.emfcompare;
 
+import com.google.common.base.Function;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+//import java.util.function.Function;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.compare.Comparison;
 import org.eclipse.emf.compare.Diff;
 import org.eclipse.emf.compare.EMFCompare;
+import org.eclipse.emf.compare.Match;
 import org.eclipse.emf.compare.match.DefaultComparisonFactory;
 import org.eclipse.emf.compare.match.DefaultEqualityHelperFactory;
 import org.eclipse.emf.compare.match.DefaultMatchEngine;
 import org.eclipse.emf.compare.match.IComparisonFactory;
 import org.eclipse.emf.compare.match.IMatchEngine;
 import org.eclipse.emf.compare.match.eobject.IEObjectMatcher;
+import org.eclipse.emf.compare.match.eobject.IdentifierEObjectMatcher;
 import org.eclipse.emf.compare.match.impl.MatchEngineFactoryImpl;
 import org.eclipse.emf.compare.match.impl.MatchEngineFactoryRegistryImpl;
+//import org.eclipse.emf.compare.match.eobject.IdentifierEObjectMatcher;;
 import org.eclipse.emf.compare.scope.IComparisonScope;
 import org.eclipse.emf.compare.utils.UseIdentifiers;
 import org.eclipse.emf.ecore.EClass;
@@ -40,31 +46,41 @@ public class HawkCompare {
 		File file1 = new File("local3.xmi");
 		File file2 = new File("local4.xmi");
 		Comparison compare = object.compare(file1, file2);
+		//compare.
 		EPackage p= object.getPackage();
+		//p.
 		//EStructuralFeature feature = p.;
 		//feature.
 		for (EObject obj:p.eContents()) {
 			//System.out.println(compare.getDifferences(object.getEObject()));
-			//System.out.println(object.getEObject().eClass().getName());
-			//System.out.println(((EClass)obj).getName());
+			//System.out.println("me  "+object.getEObject().eClass().getName());
+			//System.out.println("them  "+ ((EClass)obj).getName());
+			//EStructuralFeature feature = ((EClass)obj).getEStructuralFeature("Id");
+			//feature.
+			//System.out.println("type  "+ ((EClass)obj).getEStructuralFeature("Id").getFeatureID());
+			//System.out.println("id  "+ ((EClass)obj).getFeatureID(((EClass)obj).getEStructuralFeature("Id")));
 			//if (object.isInstanceOf(obj,object.getEObject()))
 				//System.out.println("its out");
 		}
 		//System.out.println(object.getAllObjects(object.getResourceModel1().getContents().get(0)));
-		for(Diff diff: compare.getDifferences()) {
-			System.out.println(diff.getKind()+"  "+ diff.getMatch().getLeft().eClass().getName()+ "  "+diff.getMatch().getRight().eClass().getName());
-		}
-		for (EObject obj: object.getAllObjects(object.getResourceModel1().getContents().get(0)) ) {
-			for (Diff diff: compare.getDifferences(obj)) {
-				System.out.println(diff.getKind() + "    "+ obj.eClass().getName());
-			}
-			System.out.println(compare.getDifferences(obj));
-			System.out.println();
-			System.out.println();
-		}
+		//for(Diff diff: compare.getDifferences()) {
+			//System.out.println(diff.getKind()+"  "+ diff.getMatch().getLeft().eClass().getName()+ "  "+diff.getMatch().getRight().eClass().getName());
+		//}
+		//for (EObject obj: object.getAllObjects(object.getResourceModel1().getContents().get(0)) ) {
+			//for (Diff diff: compare.getDifferences(obj)) {
+				//System.out.println(diff.getKind() + "    "+ obj.eClass().getName());
+			//}
+			//System.out.println(compare.getDifferences(obj));
+			//System.out.println();
+			//System.out.println();
+		//}
 		
 		for (Diff d:compare.getDifferences()) {
-			//System.out.println(d.getKind() + "  " + d.eClass());
+			System.out.println("Diff  "+d.getKind() + "  " + d);
+		}
+		for (Match m:compare.getMatches()) {
+			System.out.println("Match  "+ m.getLeft() +"   "+ m.getRight() + "   "+m);
+			
 		}
 
 	}
@@ -81,12 +97,41 @@ public class HawkCompare {
 		setResourceMetamodel(metamodel);
 		setResourceModel1(model1);
 		setResourceModel2(model2);
+		////System.out.println("class  "+ model1.getClass());
+		//System.out.println(model1.getAllContents());
+		for (EObject obj: model1.getContents()) {
+			//System.out.println("test   "+obj);
+			for(EObject ob: obj.eContents()) {
+				//System.out.println("te" + ob.eContents());
+			}
+		}
 		//EObject obj = model1.getContents().get(0);
 		//System.out.println(obj.eContents().get(0).eContents());
 		//System.out.println(resourceSet1);
 
 		// Configure EMF Compare
+		Function<EObject, String> idFunction = new Function<EObject, String>() {
+			public String apply(EObject input) {
+				//System.out.println("input  "+input.eClass());
+				
+				//System.out.println(input.eResource());
+				if (input.eClass() instanceof EClass) {
+					//System.out.println(input.eClass().getEStructuralFeature("Id"));
+					//System.out.println(input.eClass().getClassifierID());
+					return input.eClass().getName();
+				//System.out.println(((EStructuralFeature)input).getFeatureID());
+				//return ((EClass)input).getEStructuralFeature("Id").getName();
+				}
+				// a null return here tells the match engine to fall back to the other matchers
+				return null;
+				//return "BlockDiagram";
+			}
+		};
+		
+		/**
+		 Default matcher
 		IEObjectMatcher matcher = DefaultMatchEngine.createDefaultEObjectMatcher(UseIdentifiers.NEVER);
+		//matcher.
 		IComparisonFactory comparisonFactory = new DefaultComparisonFactory(new DefaultEqualityHelperFactory());
 		IMatchEngine.Factory matchEngineFactory = new MatchEngineFactoryImpl(matcher, comparisonFactory);
 	        matchEngineFactory.setRanking(20);
@@ -99,6 +144,21 @@ public class HawkCompare {
 		
 		
 		return comparator.compare(scope);
+		***/
+		IEObjectMatcher fallBackMatcher = DefaultMatchEngine.createDefaultEObjectMatcher(UseIdentifiers.WHEN_AVAILABLE);
+		IEObjectMatcher customIDMatcher = new IdentifierEObjectMatcher(fallBackMatcher, idFunction);
+		 
+		IComparisonFactory comparisonFactory = new DefaultComparisonFactory(new DefaultEqualityHelperFactory());
+		 
+		IMatchEngine.Factory.Registry registry = MatchEngineFactoryRegistryImpl.createStandaloneInstance();
+		// for OSGi (IDE, RCP) usage
+		// IMatchEngine.Factory.Registry registry = EMFCompareRCPPlugin.getMatchEngineFactoryRegistry();
+		final MatchEngineFactoryImpl matchEngineFactory = new MatchEngineFactoryImpl(customIDMatcher, comparisonFactory);
+		matchEngineFactory.setRanking(20); // default engine ranking is 10, must be higher to override.
+		registry.add(matchEngineFactory);
+		IComparisonScope scope = EMFCompare.createDefaultScope(resourceSet1, resourceSet2);
+		Comparison result = EMFCompare.builder().setMatchEngineFactoryRegistry(registry).build().compare(scope);
+		return result;
 	}
 	// check if an object is an instance of a clas
 	public Boolean isInstanceOf(EObject clas,EObject object) {

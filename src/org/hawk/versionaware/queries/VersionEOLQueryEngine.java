@@ -33,6 +33,7 @@ import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.execute.operations.contributors.OperationContributorRegistry;
 import org.hawk.core.IModelIndexer;
 import org.hawk.core.IStateListener.HawkState;
+import org.hawk.core.IVcsManager;
 import org.hawk.core.graph.IGraphNode;
 import org.hawk.core.graph.IGraphNodeIndex;
 import org.hawk.core.graph.IGraphNodeReference;
@@ -125,6 +126,14 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 				results.add(instant);		
 		} 
 		return results;
+	}
+	public String getMessage() {
+		String message="";
+		for (IVcsManager manager: indexer.getRunningVCSManagers()) {
+			//manager.
+			
+		}
+		return message;
 	}
 	public Collection<Long> getAllInstants() {
 		final Set<Long> instants = new TreeSet<>();
