@@ -86,8 +86,6 @@
         eType="#//Arrays" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ArraySize" upperBound="-1"
         eType="#//Arrays" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ArraySubset" upperBound="-1"
-        eType="#//Arrays" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ArrayLiteral" upperBound="-1"
         eType="#//ArrayLiteral" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ConcatenateStrings" upperBound="-1"
@@ -95,6 +93,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="ReverseString" upperBound="-1"
         eType="#//Strings" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="StringLength" upperBound="-1"
+        eType="#//Strings" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="StringSubset" upperBound="-1"
         eType="#//Strings" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="StringSubset" upperBound="-1"
         eType="#//Strings" containment="true"/>
@@ -148,6 +148,8 @@
         eType="#//Object" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="BooleanToInteger" upperBound="-1"
         eType="#//Object" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="PropertyNode" upperBound="-1"
+        eType="#//PropertyNode" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="UnflattenFromJSON" upperBound="-1"
         eType="#//Object" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="FlattenToJSON" upperBound="-1"
@@ -200,6 +202,8 @@
         eType="#//OpaqueRefnumLiteral" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="IsFirstCall" upperBound="-1"
         eType="#//Object" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="VariantToFlattenedByteArray"
+        upperBound="-1" eType="#//Object" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="AbsoluteValue" upperBound="-1"
         eType="#//Object" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ComplexToRealImaginary"
@@ -214,40 +218,10 @@
         eType="#//Arrays" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="VariantToFlattenedByteArray"
         upperBound="-1" eType="#//Arrays" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="DecimalStringToNumber"
-        upperBound="-1" eType="#//Object" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="NumberToBooleanArray" upperBound="-1"
-        eType="#//Object" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="IsNotANumberOrPathOrRefnum"
-        upperBound="-1" eType="#//Object" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="EnqueueElement" upperBound="-1"
-        eType="#//Object" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="OneButtonDialog" upperBound="-1"
-        eType="#//Object" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="RoundToNearest" upperBound="-1"
-        eType="#//Object" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="IsLessOrEqualTo0" upperBound="-1"
-        eType="#//Object" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ObtainQueue" upperBound="-1"
-        eType="#//Object" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="SizeToContent" upperBound="-1"
-        eType="#//Object" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ToDoublePrecisionFloat"
-        upperBound="-1" eType="#//Object" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ToUnsignedWordInteger"
-        upperBound="-1" eType="#//Object" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="BooleanArrayToNumber" upperBound="-1"
-        eType="#//Object" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="InRangeAndCoerce" upperBound="-1"
-        eType="#//Object" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ArrayToCluster" upperBound="-1"
-        eType="#//ArrayToCluster" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="TimeStampToDoublePrecisionFloat"
-        upperBound="-1" eType="#//Object" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="DequeueElement" upperBound="-1"
-        eType="#//Object" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BlockDiagram" eSuperTypes="#//GroupObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="file" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Comment" eSuperTypes="#//Object">
@@ -317,7 +291,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="ValueFormatter" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="RadixVisibility" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Radix" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="UnitAnnotation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ArrayBehavior" eSuperTypes="#//Behavior">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="ElementType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -348,6 +321,7 @@
         eType="#//p" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="AttachedTo" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Visible" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="IsReadOnly" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="SizeToText" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
@@ -372,6 +346,8 @@
         eType="#//Behavior" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="RingBehavior" upperBound="-1"
         eType="#//RingBehavior" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DataType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Facade" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="FixedConstantFacade" upperBound="-1"
         eType="#//FixedConstantFacade" containment="true"/>
@@ -407,6 +383,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="ResolveFailedHint" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Signature" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Target" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="DomainName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Template" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
@@ -420,6 +397,7 @@
         eType="#//MethodDeclaration" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Parameter" eSuperTypes="#//Object">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Desc" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="WhileLoop" eSuperTypes="#//GroupObject #//NodeObject">
@@ -444,7 +422,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Terminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="AutoIndex" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="TunnelMode" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="IsConditional" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EventStructure" instanceTypeName="EventStructure"
       eSuperTypes="#//Structure">
@@ -559,10 +536,16 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Facade" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="UndockedSize" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="LabelVisible" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="LabelPosition" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VariantToData" eSuperTypes="#//Object"/>
   <eClassifiers xsi:type="ecore:EClass" name="ClusterLiteral" eSuperTypes="#//GroupObject #//Literal">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DataType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ControlDefinitionChecksum"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="p.Data" upperBound="-1"
+        eType="#//p.Data" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="p.TypeDefinitionTargets"
+        upperBound="-1" eType="#//p.TypeDefinitionTargets" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ClusterBehavior" upperBound="-1"
         eType="#//ClusterBehavior" containment="true"/>
   </eClassifiers>
@@ -705,19 +688,16 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="CanToggle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Rank" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="ConcatenateInputs" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ConcatenateInputsIsRequested"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="BinaryElements" upperBound="-1"
         eType="#//Object" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ArrayToCluster" eSuperTypes="#//Object">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="NumberOfClusterElements"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConcatenateStrings" eSuperTypes="#//Strings">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Terminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="VerticalChunkCount" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Structure" eSuperTypes="#//NodeObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DataType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Default" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="IgnoreUpperLowerCase" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="UserSelectorBounds" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -751,6 +731,5 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ControlReference" eSuperTypes="#//Object">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="SourceControl" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="SizeToContent" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>

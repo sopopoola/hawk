@@ -1,6 +1,7 @@
 package org.hawk.versionaware.queries;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -17,9 +18,25 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.compare.Comparison;
+import org.eclipse.emf.compare.Diff;
+import org.eclipse.emf.compare.EMFCompare;
+import org.eclipse.emf.compare.match.DefaultComparisonFactory;
+import org.eclipse.emf.compare.match.DefaultEqualityHelperFactory;
+import org.eclipse.emf.compare.match.DefaultMatchEngine;
+import org.eclipse.emf.compare.match.IComparisonFactory;
+import org.eclipse.emf.compare.match.IMatchEngine;
+import org.eclipse.emf.compare.match.eobject.IEObjectMatcher;
+import org.eclipse.emf.compare.match.eobject.IdentifierEObjectMatcher;
+import org.eclipse.emf.compare.match.impl.MatchEngineFactoryImpl;
+import org.eclipse.emf.compare.match.impl.MatchEngineFactoryRegistryImpl;
+import org.eclipse.emf.compare.scope.IComparisonScope;
+import org.eclipse.emf.compare.utils.UseIdentifiers;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -61,7 +78,9 @@ import org.hawk.timeaware.queries.operations.reflective.TimeAwareNodeHistoryOper
 import org.hawk.timeaware.queries.operations.reflective.TypeHistoryOperationContributor;
 import org.hawk.ui.emfresource.LocalHawkResourceFactoryImpl;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Function;;
 
 public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 	private static final Logger LOGGER = LoggerFactory.getLogger(VersionEOLQueryEngine.class);
@@ -90,11 +109,130 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 		Object[] times = collect.toArray();
 		return allInstancesAt((Long)times[size]);
 	}
-	public void saveModel(Collection elements) {
+	public void saveModel() {
 		//Client client= new Client();
 		//Client.Factory.class.
-		HawkModelDescriptor descriptor= new HawkModelDescriptor();
+		//HawkModelDescriptor descriptor= new HawkModelDescriptor();
 		//this.indexer.getModelParsers().
+		File hawkModel = new File ("C:/Users/student/Documents/eclipse/runtime-EclipseApplication/Hawk/tweet5.localhawkmodel");
+		//File f = new File("C:/Users/student/Documents/eclipse/runtime-EclipseApplication/Hawk/model/tweettest.localhawkmodel");
+		File f;
+		//File dest = new File(f.getAbsolutePath()+".xmi");
+		//System.out.println(indexer.getName());
+		int num=0;
+		PrintWriter writer;
+		ResourceSet rs1 = new ResourceSetImpl();
+		ResourceSet rs2 = new ResourceSetImpl();
+		Resource rSource = null;
+		Resource rSource1 = null;
+		//rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
+		try {
+			for(Long instant: getAllInstants()) {
+				num++;
+				f = new File("C:/Users/student/Documents/eclipse/runtime-EclipseApplication/Hawk/model/"+indexer.getName()+num +".localhawkmodel");
+				if (!f.exists()) {
+					f.createNewFile();
+				}
+				writer = new PrintWriter(f, "UTF-8");
+				writer.println(indexer.getName());
+				writer.print("repos=*\r\n" + 
+							"files=*\r\n");
+				writer.println("timepoint="+instant);	
+				writer.close();
+				if (num%2==0) {
+					rSource = rs1.createResource(URI.createFileURI(f.getPath()));
+					rSource.load(null);
+				}
+				else {
+					rSource1 = rs2.createResource(URI.createFileURI(f.getPath()));
+					rSource1.load(null);
+				}
+				if(num>=2) {
+				if (rSource.isLoaded() && rSource.isLoaded()) {
+					Comparison compare= compare(rs1,rs2);
+					for (Diff d:compare.getDifferences()) {
+						System.out.println("Diff  "+d.getKind() + "  " + d);
+					}
+				}
+				if (num%2==0) {
+					if (rSource1.isLoaded()) {
+						rSource1.unload();
+					}
+				}
+				else {
+					if (rSource.isLoaded()) {
+						rSource.unload();
+					}
+				}
+				}
+			}
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			if(num>=2) {
+			if (rSource.isLoaded()) {
+				rSource.unload();
+			}
+			if (rSource1.isLoaded()) {
+				rSource.unload();
+			}
+			
+			}
+		}
+		
+		//File dest =  new File ("C:\\Users\\student\\Documents\\eclipse\\runtime-EclipseApplication\\Hawk\\newtest.xmi2");
+		ResourceSet rs = new ResourceSetImpl();
+		//rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
+		Resource rSource2 = rs.createResource(URI.createFileURI(hawkModel.getPath()));
+		Resource rTarget = null;
+		//System.out.println(rSource.toString());
+		try {
+			rSource2.load(null);
+			rTarget = new XMIResourceImpl(URI.createFileURI(hawkModel.getAbsolutePath()+".xmi"));
+			for (Resource r : new ArrayList<>(rs.getResources())) {
+				rTarget.getContents().addAll(new ArrayList<>(r.getContents()));
+			}
+			rTarget.save(null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			if (rTarget != null && rTarget.isLoaded()) {
+				rTarget.unload();
+			}
+			if (rSource2.isLoaded()) {
+				rSource2.unload();
+			}
+		}
+	}
+	public Comparison compare(ResourceSet resourceSet1, ResourceSet resourceSet2) {
+		Function<EObject, String> idFunction = new Function<EObject, String>() {
+			public String apply(EObject input) {
+				if (input.eClass() instanceof EClass) {
+					return input.eClass().getName();
+				}
+				// a null return here tells the match engine to fall back to the other matchers
+				return null;
+			}
+		};
+		
+		
+		IEObjectMatcher fallBackMatcher = DefaultMatchEngine.createDefaultEObjectMatcher(UseIdentifiers.WHEN_AVAILABLE);
+		IEObjectMatcher customIDMatcher = new IdentifierEObjectMatcher(fallBackMatcher, idFunction);
+		 
+		IComparisonFactory comparisonFactory = new DefaultComparisonFactory(new DefaultEqualityHelperFactory());
+		 
+		IMatchEngine.Factory.Registry registry = MatchEngineFactoryRegistryImpl.createStandaloneInstance();
+		// for OSGi (IDE, RCP) usage
+		// IMatchEngine.Factory.Registry registry = EMFCompareRCPPlugin.getMatchEngineFactoryRegistry();
+		final MatchEngineFactoryImpl matchEngineFactory = new MatchEngineFactoryImpl(customIDMatcher, comparisonFactory);
+		matchEngineFactory.setRanking(20); // default engine ranking is 10, must be higher to override.
+		registry.add(matchEngineFactory);
+		IComparisonScope scope = EMFCompare.createDefaultScope(resourceSet1, resourceSet2);
+		Comparison result = EMFCompare.builder().setMatchEngineFactoryRegistry(registry).build().compare(scope);
+		return result;
 	}
 	public Collection<?> getVersion(String date){
 		final List<Object> results = new ArrayList<>();
@@ -235,6 +373,19 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 		}
 		
 	}
+	private void loadMetamodel() {
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore",
+				new EcoreResourceFactoryImpl());
+		ResourceSet resourceSet = new ResourceSetImpl();
+		URI uri2 = URI.createFileURI("C:/Users/student/git/hawk/labview.ecore");
+
+		Resource r = resourceSet.getResource(uri2, true);
+		//System.out.println(r.getContents());
+		EObject eObject = r.getContents().get(0);
+		
+		EPackage.Registry.INSTANCE.put("http://www.ni.com/LabVIEW.VI", eObject);
+		//return r;
+	}
 	public void saveOld() throws Exception {
 		File f = new File("C:\\Users\\student\\Documents\\eclipse\\runtime-EclipseApplication\\Hawk\\model\\test.localhawkmodel");
 		File dest = new File(f.getAbsolutePath()+".xmi");
@@ -333,6 +484,7 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 	
 	@Override
 	public String getHumanReadableName() {
+		//loadMetamodel();
 		return "Version Aware EOL Query Engine";
 	}
 }

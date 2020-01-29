@@ -55,7 +55,7 @@ public class LabviewModelResourceFactory implements IModelResourceFactory {
 	private final String xml_opening_tag = "<?xml version=\"1.0\" encoding=\"ASCII\"?>\r\n" + 
 			"<BlockDiagram xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:LabView=\"http://www.example.org/LabView\">";
 	private final String xml_closing_tag = "</BlockDiagram>";
-
+	private static int number=0;
 	@Override
 	public String getHumanReadableName() {
 		return "LabVIEW Parser";
@@ -141,7 +141,8 @@ public class LabviewModelResourceFactory implements IModelResourceFactory {
 	
 	private static String getFileName(String name) {
 		String[] nameList= name.split("\\.");
-		String result= nameList[0] + ".customxml";
+		String result= nameList[0] + ".customxml"+number;
+		number++;
 		return result;
 		
 	}
