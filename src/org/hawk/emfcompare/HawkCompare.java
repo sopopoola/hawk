@@ -2,9 +2,24 @@ package org.hawk.emfcompare;
 
 import com.google.common.base.Function;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 //import java.util.function.Function;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -35,6 +50,11 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 public class HawkCompare {
 	private Resource metamodel;
@@ -43,8 +63,8 @@ public class HawkCompare {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		HawkCompare object = new HawkCompare();
-		File file1 = new File("local3.xmi");
-		File file2 = new File("local4.xmi");
+		File file1 = new File("myhawksap52.xmi");
+		File file2 = new File("myhawksap51.xmi");
 		Comparison compare = object.compare(file1, file2);
 		//compare.
 		EPackage p= object.getPackage();
@@ -218,7 +238,7 @@ public class HawkCompare {
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore",
 				new EcoreResourceFactoryImpl());
 		ResourceSet resourceSet = new ResourceSetImpl();
-		URI uri2 = URI.createFileURI("labview.ecore");
+		URI uri2 = URI.createFileURI("C:/Users/student/git/hawk/labview.ecore");
 
 		Resource r = resourceSet.getResource(uri2, true);
 		//System.out.println(r.getContents());
@@ -250,5 +270,95 @@ public class HawkCompare {
 	public EObject getEObject() {
 		return getResourceModel1().getContents().get(0);
 	}
+	
+	public File localParse(File file, File file2) throws ParserConfigurationException, IOException, SAXException {
+		File t = new File("");
+		File f= new File(t.getAbsoluteFile()+"/newfiles/"+getFileName(file.getName()));
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	    factory.setIgnoringElementContentWhitespace(true);
+	    factory.setNamespaceAware(true);
+	    DocumentBuilder builder = factory.newDocumentBuilder();
+	    Document doc = builder.parse(file);
+	    Document doc2 = builder.parse(file2);
+	    NodeList listA= doc.getElementsByTagName("BlockDiagram");
+	    NodeList listB= doc2.getElementsByTagName("BlockDiagram");
+	    Node node,node2;
+	    for(int i=0;i<listA.getLength();i++) {
+	    	node = (Node) listA.item(i);
+	    	for (int j=0;j<listB.getLength();j++) {
+	    		node2 = (Node) listB.item(j);
+	    		if(((Element)node).getAttribute("file").equals(((Element)node2).getAttribute("file"))) {
+	    			
+	    		}
+	    	}
+		    //System.out.println("node  "+ node);
+		    String fname= ((Element)node).getAttribute("");
+	    }
+	    node = (Node) listA.item(0);
+	    //System.out.println("node  "+ node);
+	    String fname= ((Element)node).getAttribute("");
+	   ((Element)node).setAttribute("file", file.getName());
+	    try {
+			//System.out.println(nodeToString(node));
+			PrintWriter writer = new PrintWriter(f, "UTF-8");
+			//System.out.println(f.getAbsolutePath());
+			
+			writer.println(nodeToString(node));
+			
+			//f.
+			//System.out.println("test  "+ getFileName(file.getName()));
+			//writer.println("The second line");
+			writer.close();
+		} catch (TransformerException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	   // node.
+	    //Element element= (Element)node;
+	   // NodeList list =element.getChildNodes();
+	    //System.out.println();
+	   
+	    //System.out.println(doc.getElementsByTagName("BlockDiagram"));
+	   //// for (int i = 0; i < list.getLength(); i++) {
+            //Node nNode = (Node) list.item(i);
+	    //}
+	    return f;
+	    // Do something with the document here.
+	}
+	
+	private String nodeToString(Node node)
+			throws TransformerException
+			{
+			    StringWriter buf = new StringWriter();
+			    Transformer xform = TransformerFactory.newInstance().newTransformer();
+			    xform.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+			    xform.transform(new DOMSource(node), new StreamResult(buf));
+			    return(buf.toString());
+			}
 
+	private String getFileName(String name) {
+		String[] nameList= name.split("\\.");
+		String result= nameList[0] + ".customxml";
+		return result;
+		
+	}
+	public File createEmptyFile() {
+		File n= new File("empty.xmi");
+		 try {
+				//System.out.println(nodeToString(node));
+				PrintWriter writer = new PrintWriter(n, "UTF-8");
+				//System.out.println(f.getAbsolutePath());
+				
+				writer.println("<?xml version=\"1.0\" encoding=\"ASCII\"?>\r\n");
+				
+				//f.
+				//System.out.println("test  "+ getFileName(file.getName()));
+				//writer.println("The second line");
+				writer.close();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} 
+		return n;
+	}
 }

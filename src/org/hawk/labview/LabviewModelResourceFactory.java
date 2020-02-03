@@ -100,7 +100,7 @@ public class LabviewModelResourceFactory implements IModelResourceFactory {
 		File t = new File("");
 		File f= new File(t.getAbsoluteFile()+"/newfiles/"+getFileName(file.getName()));
 		System.out.println("file parser is called");
-		System.out.println(f.getAbsolutePath());
+		//System.out.println(f.getAbsolutePath());
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	    //factory.setValidating(true);
 	    factory.setIgnoringElementContentWhitespace(true);
@@ -110,7 +110,8 @@ public class LabviewModelResourceFactory implements IModelResourceFactory {
 	    Document doc = builder.parse(file);
 	    NodeList listA= doc.getElementsByTagName("BlockDiagram");
 	    Node node = (Node) listA.item(0);
-	   // ((Element)node).setAttribute("file", file.getAbsolutePath());
+	    //System.out.println("node  "+ node);
+	   ((Element)node).setAttribute("file", file.getName());
 	    try {
 			//System.out.println(nodeToString(node));
 			PrintWriter writer = new PrintWriter(f, "UTF-8");

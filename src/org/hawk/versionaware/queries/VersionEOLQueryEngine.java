@@ -60,6 +60,7 @@ import org.hawk.core.graph.timeaware.ITimeAwareGraphNode;
 import org.hawk.core.query.InvalidQueryException;
 import org.hawk.core.query.QueryExecutionException;
 import org.hawk.core.runtime.BaseModelIndexer;
+import org.hawk.emfcompare.HawkCompare;
 import org.hawk.emfresource.impl.LocalHawkResourceImpl;
 import org.hawk.epsilon.emc.EOLQueryEngine;
 import org.hawk.epsilon.emc.wrappers.GraphNodeWrapper;
@@ -125,8 +126,15 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 		ResourceSet rs2 = new ResourceSetImpl();
 		Resource rSource = null;
 		Resource rSource1 = null;
+		File file1 = null;
+		File file2=null;
+		File fd = new File("C:/Users/student/Documents/eclipse/runtime-EclipseApplication/Hawk/model/"+indexer.getName()+"diff.txt");
+		PrintWriter writer2 = null;
 		//rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
 		try {
+			//loadMetamodel2();
+			
+			writer2 = new PrintWriter(fd, "UTF-8");
 			for(Long instant: getAllInstants()) {
 				num++;
 				f = new File("C:/Users/student/Documents/eclipse/runtime-EclipseApplication/Hawk/model/"+indexer.getName()+num +".localhawkmodel");
@@ -139,21 +147,54 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 							"files=*\r\n");
 				writer.println("timepoint="+instant);	
 				writer.close();
+				
 				if (num%2==0) {
 					rSource = rs1.createResource(URI.createFileURI(f.getPath()));
 					rSource.load(null);
+					Resource rTarget = new XMIResourceImpl(URI.createFileURI(f.getAbsolutePath()+".xmi"));
+					for (Resource r : new ArrayList<>(rs1.getResources())) {
+						rTarget.getContents().addAll(new ArrayList<>(r.getContents()));
+					}
+					rTarget.save(null);
+					file1 = new File(f.getAbsolutePath()+".xmi");
+					if (rTarget.isLoaded()) {
+						rTarget.unload();
+					}
+					if (rSource.isLoaded()) {
+						rSource.unload();
+					}
 				}
 				else {
 					rSource1 = rs2.createResource(URI.createFileURI(f.getPath()));
 					rSource1.load(null);
-				}
-				if(num>=2) {
-				if (rSource.isLoaded() && rSource.isLoaded()) {
-					Comparison compare= compare(rs1,rs2);
-					for (Diff d:compare.getDifferences()) {
-						System.out.println("Diff  "+d.getKind() + "  " + d);
+					//System.out.println("rs2  "+rs2.getResources());
+					//System.out.println(rs2);
+					Resource rTarget = new XMIResourceImpl(URI.createFileURI(f.getAbsolutePath()+".xmi"));
+					for (Resource r : new ArrayList<>(rs2.getResources())) {
+						//System.out.println("r  "+ r.getContents());
+						rTarget.getContents().addAll(new ArrayList<>(r.getContents()));
+					}
+					rTarget.save(null);
+					file2 = new File(f.getAbsolutePath()+".xmi");
+					if (rTarget.isLoaded()) {
+						rTarget.unload();
+					}
+					if (rSource1.isLoaded()) {
+						rSource1.unload();
 					}
 				}
+				if(num>=2) {
+				if (file1!=null && file2!=null) {
+					writer2.println(file1+"       "+file2);
+					HawkCompare object = new HawkCompare();
+					Comparison compare = object.compare(file1, file2);
+					System.out.println(file1.getName()+"  the  "+ file2.getName());
+					
+					for (Diff d:compare.getDifferences()) {
+						//writer2.println("Diff2  "+d.getKind() + "  " + d);
+					}
+				}
+				/*
 				if (num%2==0) {
 					if (rSource1.isLoaded()) {
 						rSource1.unload();
@@ -164,21 +205,30 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 						rSource.unload();
 					}
 				}
+				
+				*/
 				}
+				writer2.println("");
+				writer2.println("");
+				writer2.println("Iteration:  "+num);
+				writer2.println("");
 			}
+			
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}finally {
-			if(num>=2) {
-			if (rSource.isLoaded()) {
-				rSource.unload();
-			}
-			if (rSource1.isLoaded()) {
-				rSource.unload();
-			}
 			
+			if (rSource!= null && rSource.isLoaded()) {
+				rSource.unload();
 			}
+			if (rSource1 != null && rSource1.isLoaded()) {
+				rSource1.unload();
+			}
+			if(writer2!=null) {
+				writer2.close();
+			}
+	
 		}
 		
 		//File dest =  new File ("C:\\Users\\student\\Documents\\eclipse\\runtime-EclipseApplication\\Hawk\\newtest.xmi2");
@@ -207,7 +257,7 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 			}
 		}
 	}
-	public Comparison compare(ResourceSet resourceSet1, ResourceSet resourceSet2) {
+	public Comparison compare(Resource resourceSet1, Resource resourceSet2) {
 		Function<EObject, String> idFunction = new Function<EObject, String>() {
 			public String apply(EObject input) {
 				if (input.eClass() instanceof EClass) {
@@ -233,6 +283,21 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 		IComparisonScope scope = EMFCompare.createDefaultScope(resourceSet1, resourceSet2);
 		Comparison result = EMFCompare.builder().setMatchEngineFactoryRegistry(registry).build().compare(scope);
 		return result;
+	}
+	
+	private Resource loadMetamodel2() {
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore",
+				new EcoreResourceFactoryImpl());
+		ResourceSet resourceSet = new ResourceSetImpl();
+		URI uri2 = URI.createFileURI("C:/Users/student/git/hawk/labview.ecore");
+
+		Resource r = resourceSet.getResource(uri2, true);
+		//System.out.println(r.getContents());
+		EObject eObject = r.getContents().get(0);
+		
+		EPackage.Registry.INSTANCE.put("http://www.ni.com/LabVIEW.VI", eObject);
+		return r;
+		
 	}
 	public Collection<?> getVersion(String date){
 		final List<Object> results = new ArrayList<>();
