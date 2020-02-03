@@ -303,13 +303,12 @@ public class HawkCompare {
 	    		node2 = (Node) listB.item(j);
 	    		if(((Element)node).getAttribute("file").equals(((Element)node2).getAttribute("file"))) {
 	    			
-		    		
-	    			PrintWriter writer2 = new PrintWriter(f, "UTF-8");
+		    		PrintWriter writer2 = new PrintWriter(f, "UTF-8");
 	    			writer2.println(nodeToString(node2));
 	    			
 	    			
 	    			writer2.close();
-	    			pair.add(new Pair(f.getAbsolutePath(),f.getAbsolutePath()));
+	    			pair.add(new Pair<String, String>(f.getAbsolutePath(),f.getAbsolutePath()));
 	    			found=true;
 	    			notFound.remove(Integer.valueOf(j));
 	    			break;
@@ -317,11 +316,19 @@ public class HawkCompare {
 	    		}
 	    	}
 	    	if(!found) {
-	    		pair.add(new Pair(f,empty));
+	    		
+	    		pair.add(new Pair<String, String>(f.getAbsolutePath(),empty));
 	    	}
+	    	
 		    //System.out.println("node  "+ node);
 		    String fname= ((Element)node).getAttribute("");
 	    }
+	    for(Object obj:notFound) {
+    		PrintWriter writer2 = new PrintWriter(f, "UTF-8");
+			writer2.println(nodeToString((Node)listB.item((int)obj)));
+			writer2.close();
+    		pair.add(new Pair<String, String>(empty,f.getAbsolutePath()));
+    	}
 	    node = (Node) listA.item(0);
 	    //System.out.println("node  "+ node);
 	    String fname= ((Element)node).getAttribute("");
