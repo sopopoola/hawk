@@ -9,7 +9,11 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
+//import javafx.util.*;
 //import java.util.function.Function;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -50,6 +54,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.hawk.graph.util.Pair;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -66,6 +71,7 @@ public class HawkCompare {
 		File file1 = new File("myhawksap52.xmi");
 		File file2 = new File("myhawksap51.xmi");
 		Comparison compare = object.compare(file1, file2);
+		//compare.getDifferences().
 		//compare.
 		EPackage p= object.getPackage();
 		//p.
@@ -271,7 +277,8 @@ public class HawkCompare {
 		return getResourceModel1().getContents().get(0);
 	}
 	
-	public File localParse(File file, File file2) throws ParserConfigurationException, IOException, SAXException {
+	public File localParse(File file, File file2) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+		ArrayList <Pair <String,String>> pair= new ArrayList <Pair <String,String>> ();
 		File t = new File("");
 		File f= new File(t.getAbsoluteFile()+"/newfiles/"+getFileName(file.getName()));
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -283,13 +290,34 @@ public class HawkCompare {
 	    NodeList listA= doc.getElementsByTagName("BlockDiagram");
 	    NodeList listB= doc2.getElementsByTagName("BlockDiagram");
 	    Node node,node2;
+	    //List notFound =new ArrayList<Integer>();
+	    List notFound= IntStream.range(0,listB.getLength()).boxed().collect(Collectors.toList());
+	   String empty= createEmptyFile().getAbsolutePath();
 	    for(int i=0;i<listA.getLength();i++) {
 	    	node = (Node) listA.item(i);
+	    	boolean found=false;
+	    	PrintWriter writer = new PrintWriter(f, "UTF-8");
+	    	writer.println(nodeToString(node));
+	    	writer.close();
 	    	for (int j=0;j<listB.getLength();j++) {
 	    		node2 = (Node) listB.item(j);
 	    		if(((Element)node).getAttribute("file").equals(((Element)node2).getAttribute("file"))) {
 	    			
+		    		
+	    			PrintWriter writer2 = new PrintWriter(f, "UTF-8");
+	    			writer2.println(nodeToString(node2));
+	    			
+	    			
+	    			writer2.close();
+	    			pair.add(new Pair(f.getAbsolutePath(),f.getAbsolutePath()));
+	    			found=true;
+	    			notFound.remove(Integer.valueOf(j));
+	    			break;
+	    			
 	    		}
+	    	}
+	    	if(!found) {
+	    		pair.add(new Pair(f,empty));
 	    	}
 		    //System.out.println("node  "+ node);
 		    String fname= ((Element)node).getAttribute("");
