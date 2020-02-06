@@ -29,10 +29,14 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.compare.CompareFactory;
 import org.eclipse.emf.compare.Comparison;
 import org.eclipse.emf.compare.Diff;
 import org.eclipse.emf.compare.EMFCompare;
 import org.eclipse.emf.compare.Match;
+import org.eclipse.emf.compare.ReferenceChange;
+import org.eclipse.emf.compare.impl.ComparisonImpl;
+import org.eclipse.emf.compare.internal.spec.ComparisonSpec;
 import org.eclipse.emf.compare.match.DefaultComparisonFactory;
 import org.eclipse.emf.compare.match.DefaultEqualityHelperFactory;
 import org.eclipse.emf.compare.match.DefaultMatchEngine;
@@ -68,50 +72,69 @@ public class HawkCompare {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		HawkCompare object = new HawkCompare();
-		File file1 = new File("myhawksap52.xmi");
-		File file2 = new File("myhawksap51.xmi");
+		File file1 = new File("myhawksap64.localhawkmodel.xmi");
+		File file2 = new File("myhawksap65.localhawkmodel.xmi");
+		//File file1 = new File("local4.xmi");
+		//File file2 = new File("local3.xmi");
+		File file3 = new File("modelP0.xmi");
+		File file4 = new File("modelPb0.xmi");
 		Comparison compare = object.compare(file1, file2);
+		for(Diff d: compare.getDifferences()) {
+			System.out.println("Diff  "+ d.getKind()+"  "+d);
+		}
+		//System.out.println(compare);
 		//compare.getDifferences().
 		//compare.
-		EPackage p= object.getPackage();
-		//p.
-		//EStructuralFeature feature = p.;
-		//feature.
-		for (EObject obj:p.eContents()) {
-			//System.out.println(compare.getDifferences(object.getEObject()));
-			//System.out.println("me  "+object.getEObject().eClass().getName());
-			//System.out.println("them  "+ ((EClass)obj).getName());
-			//EStructuralFeature feature = ((EClass)obj).getEStructuralFeature("Id");
-			//feature.
-			//System.out.println("type  "+ ((EClass)obj).getEStructuralFeature("Id").getFeatureID());
-			//System.out.println("id  "+ ((EClass)obj).getFeatureID(((EClass)obj).getEStructuralFeature("Id")));
-			//if (object.isInstanceOf(obj,object.getEObject()))
-				//System.out.println("its out");
-		}
-		//System.out.println(object.getAllObjects(object.getResourceModel1().getContents().get(0)));
-		//for(Diff diff: compare.getDifferences()) {
-			//System.out.println(diff.getKind()+"  "+ diff.getMatch().getLeft().eClass().getName()+ "  "+diff.getMatch().getRight().eClass().getName());
-		//}
-		//for (EObject obj: object.getAllObjects(object.getResourceModel1().getContents().get(0)) ) {
-			//for (Diff diff: compare.getDifferences(obj)) {
-				//System.out.println(diff.getKind() + "    "+ obj.eClass().getName());
-			//}
-			//System.out.println(compare.getDifferences(obj));
-			//System.out.println();
-			//System.out.println();
-		//}
+		/*
+		//EPackage p= object.getPackage();
+		//Comparison compare= new ComparisonSpec();
+		Comparison compare= CompareFactory.eINSTANCE.createComparison();
+		EList<Diff> diff= compare.getDifferences();
 		
-		for (Diff d:compare.getDifferences()) {
-			System.out.println("Diff  "+d.getKind() + "  " + d);
+		try {
+			//System.out.println("start");
+			ArrayList<Pair<String, String>> list = object.splitFile(file1,file2);
+			File fileA,fileB;
+			Comparison compare2;
+			for(Pair l:list) {
+				fileA= new File((String) l.getT());
+				fileB= new File((String) l.getU());
+				if(!fileA.exists()) {
+					fileA.createNewFile();
+				}
+				if(!fileB.exists()) {
+					fileB.createNewFile();
+				}
+				System.out.println("file a"+ l.getT());
+				System.out.println("file b"+ l.getU());
+				compare2= object.compare(fileA, fileB);
+				System.out.println("compare "+compare2.getDifferences().size());
+				//diff.addAll(compare2.getDifferences());
+				//System.out.println(l);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		System.out.println("original compare "+diff.size());
+		
+		for (Diff d:diff) {
+			if(d instanceof ReferenceChange)
+				System.out.println("Diff  "+d.getKind() + "  " + ((ReferenceChange) d).getReference().getName());
+			else
+				System.out.println("Diff  "+d.getKind() + "  " + d);
 		}
-		for (Match m:compare.getMatches()) {
-			System.out.println("Match  "+ m.getLeft() +"   "+ m.getRight() + "   "+m);
+		*/
+		//for (Match m:compare.getMatches()) {
+			//System.out.println("Match  "+ m.getLeft() +"   "+ m.getRight() + "   "+m);
 			
-		}
+		//}
 
 	}
 	public Comparison compare(File file1, File file2) {
 		// Load the two input models
+		System.out.println(file1.getAbsolutePath());
+		System.out.println(file2.getAbsolutePath());
 		ResourceSet resourceSet1 = new ResourceSetImpl();
 		ResourceSet resourceSet2 = new ResourceSetImpl();
 		//resourceSet1.
@@ -123,12 +146,15 @@ public class HawkCompare {
 		setResourceMetamodel(metamodel);
 		setResourceModel1(model1);
 		setResourceModel2(model2);
-		////System.out.println("class  "+ model1.getClass());
-		//System.out.println(model1.getAllContents());
 		for (EObject obj: model1.getContents()) {
-			//System.out.println("test   "+obj);
+			//System.out.println("te" + obj.eContents());
 			for(EObject ob: obj.eContents()) {
 				//System.out.println("te" + ob.eContents());
+			}
+		}
+		for (EObject obj: model2.getContents()) {
+			for(EObject ob: obj.eContents()) {
+				//System.out.println("teggg" + ob.eContents());
 			}
 		}
 		//EObject obj = model1.getContents().get(0);
@@ -142,11 +168,11 @@ public class HawkCompare {
 				
 				//System.out.println(input.eResource());
 				if (input.eClass() instanceof EClass) {
-					//System.out.println(input.eClass().getEStructuralFeature("Id"));
-					//System.out.println(input.eClass().getClassifierID());
+					//System.out.println("input  "+input.eClass().getName());
 					return input.eClass().getName();
-				//System.out.println(((EStructuralFeature)input).getFeatureID());
-				//return ((EClass)input).getEStructuralFeature("Id").getName();
+				}
+				else {
+					//System.out.println("goal");
 				}
 				// a null return here tells the match engine to fall back to the other matchers
 				return null;
@@ -244,7 +270,8 @@ public class HawkCompare {
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore",
 				new EcoreResourceFactoryImpl());
 		ResourceSet resourceSet = new ResourceSetImpl();
-		URI uri2 = URI.createFileURI("C:/Users/student/git/hawk/labview.ecore");
+		//URI uri2 = URI.createFileURI("C:/Users/student/git/hawk/labview.ecore");
+		URI uri2 = URI.createFileURI("labview.ecore");
 
 		Resource r = resourceSet.getResource(uri2, true);
 		//System.out.println(r.getContents());
@@ -277,38 +304,56 @@ public class HawkCompare {
 		return getResourceModel1().getContents().get(0);
 	}
 	
-	public File localParse(File file, File file2) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+	public ArrayList<Pair<String, String>> splitFile(File file, File file2) throws ParserConfigurationException, IOException, SAXException, TransformerException {
 		ArrayList <Pair <String,String>> pair= new ArrayList <Pair <String,String>> ();
-		File t = new File("");
-		File f= new File(t.getAbsoluteFile()+"/newfiles/"+getFileName(file.getName()));
+		File f= new File(file.getAbsoluteFile().getParent()+"/modelP/"+"empty.xmi");
+		if(!f.exists()) {
+			f.createNewFile();
+		}
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	    factory.setIgnoringElementContentWhitespace(true);
 	    factory.setNamespaceAware(true);
+	    //factory.
 	    DocumentBuilder builder = factory.newDocumentBuilder();
 	    Document doc = builder.parse(file);
 	    Document doc2 = builder.parse(file2);
+	    
 	    NodeList listA= doc.getElementsByTagName("BlockDiagram");
 	    NodeList listB= doc2.getElementsByTagName("BlockDiagram");
 	    Node node,node2;
 	    //List notFound =new ArrayList<Integer>();
-	    List notFound= IntStream.range(0,listB.getLength()).boxed().collect(Collectors.toList());
-	   String empty= createEmptyFile().getAbsolutePath();
+	   createEmptyFile(f);
+	   List notFound= IntStream.range(0,listB.getLength()).boxed().collect(Collectors.toList());
+	   String empty= f.getAbsolutePath();
 	    for(int i=0;i<listA.getLength();i++) {
 	    	node = (Node) listA.item(i);
+	    	//System.out.println(node.getLocalName());
 	    	boolean found=false;
-	    	PrintWriter writer = new PrintWriter(f, "UTF-8");
+	    	File fi= new File(f.getParent()+i+".xmi");
+	    	PrintWriter writer = new PrintWriter(fi, "UTF-8");
+	    	//writer.print("<?xml version=\"1.0\" encoding=\"ASCII\"?>\r\n");
+			//writer.println("<xmi:XMI xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\"/>");
+	    	//writer.println("<?xml version=\"1.0\" encoding=\"ASCII\"?>\r\n" + 
+	    			//"<xmi:XMI xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.ni.com/LabVIEW.VI\">\r\n" + 
+	    			//"");
 	    	writer.println(nodeToString(node));
+	    	//writer.println("</xmi:XMI>");
 	    	writer.close();
 	    	for (int j=0;j<listB.getLength();j++) {
 	    		node2 = (Node) listB.item(j);
+	    		File fi2= new File(f.getParent()+"b"+j+".xmi");
+	    		PrintWriter writer2 = new PrintWriter(fi2, "UTF-8");
+	    		//writer2.println("<xmi:XMI xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\"/>");
+    			////writer2.println("<?xml version=\"1.0\" encoding=\"ASCII\"?>\r\n" + 
+    					//"<xmi:XMI xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.ni.com/LabVIEW.VI\">\r\n" + 
+    					//"");
+	    		writer2.println(nodeToString(node2));
+	    		//writer2.println("</xmi:XMI>");
+    			writer2.close();
 	    		if(((Element)node).getAttribute("file").equals(((Element)node2).getAttribute("file"))) {
 	    			
-		    		PrintWriter writer2 = new PrintWriter(f, "UTF-8");
-	    			writer2.println(nodeToString(node2));
-	    			
-	    			
-	    			writer2.close();
-	    			pair.add(new Pair<String, String>(f.getAbsolutePath(),f.getAbsolutePath()));
+		    		
+	    			pair.add(new Pair<String, String>(fi.getAbsolutePath(),fi2.getAbsolutePath()));
 	    			found=true;
 	    			notFound.remove(Integer.valueOf(j));
 	    			break;
@@ -317,48 +362,17 @@ public class HawkCompare {
 	    	}
 	    	if(!found) {
 	    		
-	    		pair.add(new Pair<String, String>(f.getAbsolutePath(),empty));
+	    		pair.add(new Pair<String, String>(fi.getAbsolutePath(),empty));
 	    	}
 	    	
 		    //System.out.println("node  "+ node);
 		    String fname= ((Element)node).getAttribute("");
 	    }
 	    for(Object obj:notFound) {
-    		PrintWriter writer2 = new PrintWriter(f, "UTF-8");
-			writer2.println(nodeToString((Node)listB.item((int)obj)));
-			writer2.close();
-    		pair.add(new Pair<String, String>(empty,f.getAbsolutePath()));
+    		pair.add(new Pair<String, String>(empty,f.getParent()+"b"+obj+".xmi"));
     	}
-	    node = (Node) listA.item(0);
-	    //System.out.println("node  "+ node);
-	    String fname= ((Element)node).getAttribute("");
-	   ((Element)node).setAttribute("file", file.getName());
-	    try {
-			//System.out.println(nodeToString(node));
-			PrintWriter writer = new PrintWriter(f, "UTF-8");
-			//System.out.println(f.getAbsolutePath());
-			
-			writer.println(nodeToString(node));
-			
-			//f.
-			//System.out.println("test  "+ getFileName(file.getName()));
-			//writer.println("The second line");
-			writer.close();
-		} catch (TransformerException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	   // node.
-	    //Element element= (Element)node;
-	   // NodeList list =element.getChildNodes();
-	    //System.out.println();
 	   
-	    //System.out.println(doc.getElementsByTagName("BlockDiagram"));
-	   //// for (int i = 0; i < list.getLength(); i++) {
-            //Node nNode = (Node) list.item(i);
-	    //}
-	    return f;
-	    // Do something with the document here.
+	    return pair;
 	}
 	
 	private String nodeToString(Node node)
@@ -367,6 +381,8 @@ public class HawkCompare {
 			    StringWriter buf = new StringWriter();
 			    Transformer xform = TransformerFactory.newInstance().newTransformer();
 			    xform.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+			   //xform.setOutputProperty(OutputKeys.INDENT, "no");
+			    //xform.
 			    xform.transform(new DOMSource(node), new StreamResult(buf));
 			    return(buf.toString());
 			}
@@ -377,18 +393,16 @@ public class HawkCompare {
 		return result;
 		
 	}
-	public File createEmptyFile() {
-		File n= new File("empty.xmi");
+	public File createEmptyFile(File n) {
+		//File n= new File("empty.xmi");
 		 try {
 				//System.out.println(nodeToString(node));
 				PrintWriter writer = new PrintWriter(n, "UTF-8");
 				//System.out.println(f.getAbsolutePath());
 				
-				writer.println("<?xml version=\"1.0\" encoding=\"ASCII\"?>\r\n");
+				writer.print("<?xml version=\"1.0\" encoding=\"ASCII\"?>\r\n");
+				writer.print("<xmi:XMI xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\"/>");
 				
-				//f.
-				//System.out.println("test  "+ getFileName(file.getName()));
-				//writer.println("The second line");
 				writer.close();
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block

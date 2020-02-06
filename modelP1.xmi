@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><BlockDiagram Id="12" xmlns="http://www.ni.com/LabVIEW.VI">
+    <DataAccessor Bounds="425 330 40 15" DataItem="18" Id="21" Label="22">
+      <Terminal DataType="String" Direction="Input" Hotspot="3 5" Id="Value"/>
+    </DataAccessor>
+    <NodeLabel AttachedTo="21" Bounds="470 330 39 14" Id="22">
+      <p.Text/>
+    </NodeLabel>
+    <Literal Bounds="305 330 90 15" DataType="String" Id="17">
+      <p.Data/>
+      <StringBehavior TextDisplayMode="Default"/>
+    </Literal>
+    <Wire Id="23" Joints="N(17:Out)|(395,335) N(21:Value)|(428,335)"/>
+  </BlockDiagram>

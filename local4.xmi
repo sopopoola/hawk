@@ -9,4 +9,8 @@
     <Terminal Id="L6" DataType="Error" Direction="Output" Hotspot="0 30"/>
     <Terminal xsi:type="BlockDiagram:Parameter" Id="R0" Desc="message queues"/>
   </MethodCall>
+  <Wire Id="88" Joints="N(86:Out)|(380,215) h(15) N(53:T0)|(395,270)"/>
+  <Literal xsi:type="BlockDiagram:Parameter" Id="R3" Desc="error out"/>
+  <Literal xsi:type="BlockDiagram:Parameter" Id="L3" Desc="error in"/>
+  <Literal xsi:type="BlockDiagram:Parameter" Id="R0" Desc="message queues"/>
 </BlockDiagram:BlockDiagram>
