@@ -25,6 +25,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.compare.Comparison;
 import org.eclipse.emf.compare.Diff;
 import org.eclipse.emf.compare.EMFCompare;
+import org.eclipse.emf.compare.ReferenceChange;
 import org.eclipse.emf.compare.match.DefaultComparisonFactory;
 import org.eclipse.emf.compare.match.DefaultEqualityHelperFactory;
 import org.eclipse.emf.compare.match.DefaultMatchEngine;
@@ -115,7 +116,7 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 		//Client.Factory.class.
 		//HawkModelDescriptor descriptor= new HawkModelDescriptor();
 		//this.indexer.getModelParsers().
-		File hawkModel = new File ("C:/Users/student/Documents/eclipse/runtime-EclipseApplication/Hawk/tweet5.localhawkmodel");
+		//File hawkModel = new File ("C:/Users/student/Documents/eclipse/runtime-EclipseApplication/Hawk/tweet5.localhawkmodel");
 		//File f = new File("C:/Users/student/Documents/eclipse/runtime-EclipseApplication/Hawk/model/tweettest.localhawkmodel");
 		File f;
 		//File dest = new File(f.getAbsolutePath()+".xmi");
@@ -129,15 +130,20 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 		File file1 = null;
 		File file2=null;
 		File fd = new File("C:/Users/student/Documents/eclipse/runtime-EclipseApplication/Hawk/model/"+indexer.getName()+"diff.txt");
+		File summary = new File("C:/Users/student/Documents/eclipse/runtime-EclipseApplication/Hawk/model/"+indexer.getName()+"summary.txt");
+		
 		PrintWriter writer2 = null;
+		PrintWriter summaryWriter = null;
 		//rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
 		try {
 			//loadMetamodel2();
 			
 			writer2 = new PrintWriter(fd, "UTF-8");
+			summaryWriter = new PrintWriter(summary, "UTF-8");
 			for(Long instant: getAllInstants()) {
 				num++;
 				f = new File("C:/Users/student/Documents/eclipse/runtime-EclipseApplication/Hawk/model/"+indexer.getName()+num +".localhawkmodel");
+				System.out.println("f   "+ f.getAbsolutePath());
 				if (!f.exists()) {
 					f.createNewFile();
 				}
@@ -149,7 +155,10 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 				writer.close();
 				
 				if (num%2==0) {
+					System.out.println("File   "+f.getAbsolutePath());
 					rSource = rs1.createResource(URI.createFileURI(f.getPath()));
+					System.out.println("resource  "+ rs1);
+					System.out.println("rsource  "+rSource);
 					rSource.load(null);
 					Resource rTarget = new XMIResourceImpl(URI.createFileURI(f.getAbsolutePath()+".xmi"));
 					for (Resource r : new ArrayList<>(rs1.getResources())) {
@@ -157,14 +166,17 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 					}
 					rTarget.save(null);
 					file1 = new File(f.getAbsolutePath()+".xmi");
+					System.out.println("File   "+file1.getAbsolutePath());
 					if (rTarget.isLoaded()) {
 						rTarget.unload();
 					}
 					if (rSource.isLoaded()) {
 						rSource.unload();
 					}
+					System.out.println("FileBB   "+f.getAbsolutePath());
 				}
 				else {
+					System.out.println("File   "+f.getAbsolutePath());
 					rSource1 = rs2.createResource(URI.createFileURI(f.getPath()));
 					rSource1.load(null);
 					//System.out.println("rs2  "+rs2.getResources());
@@ -182,18 +194,40 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 					if (rSource1.isLoaded()) {
 						rSource1.unload();
 					}
+					System.out.println("FileBB   "+f.getAbsolutePath());
 				}
+				
 				if(num>=2) {
-				if (file1!=null && file2!=null) {
-					writer2.println(file1+"       "+file2);
-					HawkCompare object = new HawkCompare();
-					Comparison compare = object.compare(file1, file2);
-					System.out.println(file1.getName()+"  the  "+ file2.getName());
 					
+				if (file1!=null && file2!=null) {
+					//writer2.println(file1.getName()+"       "+file2.getName());
+					//System.out.println(file1.getName()+"  the "+ file2.getName());
+					HawkCompare object = new HawkCompare();
+					Comparison compare = null;
+					if(num%2==0) {
+						writer2.println(file1.getName()+"       "+file2.getName());
+						System.out.println(file1.getName()+"  the  "+ file2.getName());
+						
+						compare= object.compare(file1, file2);
+					}		
+					else {
+						writer2.println(file2.getName()+"       "+file1.getName());
+						System.out.println(file2.getName()+"  the "+ file1.getName());
+						
+						compare= object.compare(file2, file1);
+					}
+					System.out.println(file1.getName()+"  weee  "+ file2.getName());
+					object.getSummary(compare, summaryWriter);
 					for (Diff d:compare.getDifferences()) {
+						if(d instanceof ReferenceChange)
+							writer2.println("Diff  "+d.getKind() + "  " + ((ReferenceChange) d).getReference().getName()+"  "+d);
+						else
+							writer2.println("Diff  "+d.getKind() + "            " + d);
 						//writer2.println("Diff2  "+d.getKind() + "  " + d);
 					}
+					
 				}
+				
 				/*
 				if (num%2==0) {
 					if (rSource1.isLoaded()) {
@@ -212,6 +246,8 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 				writer2.println("");
 				writer2.println("Iteration:  "+num);
 				writer2.println("");
+				summaryWriter.println("");
+				summaryWriter.println("Iteration:  "+num);
 			}
 			
 		}
@@ -228,9 +264,12 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 			if(writer2!=null) {
 				writer2.close();
 			}
+			if(summaryWriter!=null) {
+				summaryWriter.close();
+			}
 	
 		}
-		
+		/*
 		//File dest =  new File ("C:\\Users\\student\\Documents\\eclipse\\runtime-EclipseApplication\\Hawk\\newtest.xmi2");
 		ResourceSet rs = new ResourceSetImpl();
 		//rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
@@ -256,6 +295,7 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 				rSource2.unload();
 			}
 		}
+		*/
 	}
 	public Comparison compare(Resource resourceSet1, Resource resourceSet2) {
 		Function<EObject, String> idFunction = new Function<EObject, String>() {
@@ -289,7 +329,7 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore",
 				new EcoreResourceFactoryImpl());
 		ResourceSet resourceSet = new ResourceSetImpl();
-		URI uri2 = URI.createFileURI("C:/Users/student/git/hawk/labview.ecore");
+		URI uri2 = URI.createFileURI("C:/Users/student/Documents/eclipse/runtime-EclipseApplication/Hawk/labview.ecore");
 
 		Resource r = resourceSet.getResource(uri2, true);
 		//System.out.println(r.getContents());

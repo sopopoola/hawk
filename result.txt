@@ -1,0 +1,3 @@
+model name is   sldemo_clutch_import
+final name is  C:\Users\student\git\hawk/simulink/sldemo_clutch_import0
+model path is  C:\Users\student\git\hawk

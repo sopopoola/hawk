@@ -1,0 +1,6 @@
+ADD   1
+CHANGE   1
+DELETE   1
+MOVE   0
+OTHERS   0
+{DELETE IsEmptyStringOrPath=1, ADD others=1}

@@ -9,9 +9,11 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 //import javafx.util.*;
 //import java.util.function.Function;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -29,6 +31,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.compare.AttributeChange;
 import org.eclipse.emf.compare.CompareFactory;
 import org.eclipse.emf.compare.Comparison;
 import org.eclipse.emf.compare.Diff;
@@ -49,9 +52,12 @@ import org.eclipse.emf.compare.match.impl.MatchEngineFactoryRegistryImpl;
 //import org.eclipse.emf.compare.match.eobject.IdentifierEObjectMatcher;;
 import org.eclipse.emf.compare.scope.IComparisonScope;
 import org.eclipse.emf.compare.utils.UseIdentifiers;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -72,16 +78,34 @@ public class HawkCompare {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		HawkCompare object = new HawkCompare();
-		File file1 = new File("myhawksap64.localhawkmodel.xmi");
-		File file2 = new File("myhawksap65.localhawkmodel.xmi");
+		File file1 = new File("myhawkx2.localhawkmodel2.xmi");
+		File file2 = new File("myhawkx1.localhawkmodel2.xmi");
 		//File file1 = new File("local4.xmi");
 		//File file2 = new File("local3.xmi");
 		File file3 = new File("modelP0.xmi");
 		File file4 = new File("modelPb0.xmi");
 		Comparison compare = object.compare(file1, file2);
+		System.out.println("resource  "+compare.eResource());
+		try {
+			File f= new File("summary.txt");
+			if(!f.exists())
+				f.createNewFile();
+			PrintWriter writer = new PrintWriter(f, "UTF-8");
+			object.getSummary(compare,writer);
+			writer.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		//object.getSummary(compare);
+		/*
 		for(Diff d: compare.getDifferences()) {
-			System.out.println("Diff  "+ d.getKind()+"  "+d);
+			if(d instanceof ReferenceChange)
+				System.out.println("Diff  "+d.getKind() + "  " + ((ReferenceChange) d).getReference().getName()+"  "+d.eCrossReferences());
+			else
+				System.out.println("Diff  "+d.getKind() + "            " + d.eCrossReferences());
 		}
+		*/
 		//System.out.println(compare);
 		//compare.getDifferences().
 		//compare.
@@ -169,7 +193,7 @@ public class HawkCompare {
 				//System.out.println(input.eResource());
 				if (input.eClass() instanceof EClass) {
 					//System.out.println("input  "+input.eClass().getName());
-					return input.eClass().getName();
+					//return input.eClass().getName();
 				}
 				else {
 					//System.out.println("goal");
@@ -271,7 +295,7 @@ public class HawkCompare {
 				new EcoreResourceFactoryImpl());
 		ResourceSet resourceSet = new ResourceSetImpl();
 		//URI uri2 = URI.createFileURI("C:/Users/student/git/hawk/labview.ecore");
-		URI uri2 = URI.createFileURI("labview.ecore");
+		URI uri2 = URI.createFileURI("C:/Users/student/Documents/eclipse/runtime-EclipseApplication/Hawk/labview.ecore");
 
 		Resource r = resourceSet.getResource(uri2, true);
 		//System.out.println(r.getContents());
@@ -409,5 +433,92 @@ public class HawkCompare {
 				e1.printStackTrace();
 			} 
 		return n;
+	}
+	public void getSummary(Comparison compare, PrintWriter writer) {
+		Map<String, Integer> pair = new HashMap();
+		int add,move,change,delete,others;
+		ResourceSet resourceSet = new ResourceSetImpl();
+		File f = new File("text.xmi");
+		if(!f.exists()) {
+			try {
+				f.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		Resource r =load(f.getAbsolutePath(), resourceSet);
+		System.out.println("new resource" + r.getContents().size());
+		add=move=change=delete=others=0;
+		String name;
+		//compare.
+		for (Match m:compare.getMatches()) {
+			//System.out.println("m  ");
+		}
+		for(Diff d: compare.getDifferences()) {
+			r.getContents().add(d);
+			//System.out.println("diff  "+ d.);
+			//System.out.println("  "+d.getClass().getName());
+			if(d instanceof ReferenceChange) {
+				//System.out.println(d.eContainer());
+				//System.out.println(12);
+				ReferenceChange s= ((ReferenceChange) d);
+				////System.out.println("ghh");
+				EObject val = s.getValue();
+				EReference ref= s.getReference();
+				//System.out.println("mmmm   "+ ref.getEType().eCrossReferences());
+				for(EStructuralFeature attr: ref.eClass().getEAllStructuralFeatures()) {
+					//System.out.println(attr);
+					//System.out.println("twist  "+ref.eClass().eGet(attr));
+					//if(attr.getName().equals("name"))
+						//System.out.println("test  "+ref.eGet(attr));
+					
+				}
+				
+				//System.out.println("reference  " + s.getReference().getEReferenceType());
+				//System.out.println("value  "+ s.getValue().eAllContents());
+				//System.out.println("s  "+s);
+				name=d.getKind()+ " "+((ReferenceChange) d).getReference().getName();
+				//System.out.println(name);
+				if(pair.containsKey(name))
+					pair.replace(name, (pair.get(name)+1));
+				else
+					pair.put(name, 1);
+				
+			}
+			else if(d instanceof AttributeChange) {
+				AttributeChange s= (AttributeChange)d;
+				//System.out.println(s);
+				//System.out.println(s.getAttribute().getName());
+				
+			}
+			else {
+				//System.out.println(d.eContainer());
+				//System.out.println(d.eCrossReferences().size());
+				name=d.getKind()+" others";
+				//System.out.println(d.getKind()+"  "+ d);
+				if(pair.containsKey(name))
+					pair.replace(name, (pair.get(name)+1));
+				else
+					pair.put(name, 1);
+			}
+			if(d.getKind().getName().equals("ADD"))
+				add++;
+			else if (d.getKind().getName().equals("DELETE"))
+				delete++;
+			else if (d.getKind().getName().equals("CHANGE"))
+				change++;
+			else if (d.getKind().getName().equals("MOVE"))
+				move++;
+			else 
+				others++;		
+		}
+		System.out.println("new resource2" + r.getContents().size());
+		writer.println("ADD   "+ add);
+		writer.println("CHANGE   "+ change);
+		writer.println("DELETE   "+ delete);
+		writer.println("MOVE   "+ move);
+		writer.println("OTHERS   "+ others);
+		writer.println(pair);
 	}
 }

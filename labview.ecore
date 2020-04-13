@@ -245,6 +245,8 @@
         upperBound="-1" eType="#//Object" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="DequeueElement" upperBound="-1"
         eType="#//Object" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="AndArrayElements" upperBound="-1"
+        eType="#//Object" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BlockDiagram" eSuperTypes="#//GroupObject">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="file" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -566,41 +568,72 @@
         eType="#//ClusterBehavior" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Cluster" eSuperTypes="#//Object">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field1" unique="false"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field1" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field2" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field3" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field4" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field5" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field6" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field7" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field8" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field9" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field10" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field11" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field12" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field13" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field14" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field15" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field16" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field17" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field18" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field19" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field20" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field21" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field22" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field23" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field24" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field25" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field26" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field27" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field28" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field29" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field30" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field31" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field32" upperBound="-1"
+        eType="#//Field" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Field33" upperBound="-1"
         eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field2" unique="false"
-        eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field3" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field4" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field5" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field6" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field7" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field8" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field9" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field10" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field11" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field12" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field13" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field14" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field15" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field16" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field17" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field18" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field19" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field20" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field21" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field22" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field23" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field24" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field25" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field26" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field27" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field28" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field29" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field30" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field31" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field32" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Field33" eType="#//Field"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="Field34" eType="#//Field"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="Field35" eType="#//Field"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="Field36" eType="#//Field"/>

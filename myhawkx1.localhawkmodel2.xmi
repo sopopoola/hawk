@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ni.com/LabVIEW.VI">
+  
+  <BlockDiagram Id="12" file="Build State String with Arguments.gvi">
+    <DataAccessor Id="31" Bounds="140 135 40 15" Label="32" DataItem="14">
+      <Terminal Id="Value" DataType="String" Direction="Input" Hotspot="3 5"/>
+    </DataAccessor>
+    <IsEmptyStringOrPath Id="40" Bounds="385 200 30 30"/>
+    <IsEmptyStringOrPath Id="39" Bounds="385 2 30 30"/>
+  </BlockDiagram>
+</xmi:XMI>
