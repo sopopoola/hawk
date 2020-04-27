@@ -5,8 +5,7 @@ Bundle-SymbolicName: hawk;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: org.hawk.versionaware
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.hawk.core;bundle-version="1.2.0",
- org.hawk.epsilon;bundle-version="1.2.0",
+Require-Bundle: org.hawk.epsilon;bundle-version="1.2.0",
  org.hawk.graph;bundle-version="1.2.0",
  org.slf4j.api;bundle-version="1.7.2",
  org.eclipse.epsilon.eol.engine;bundle-version="1.5.1",
@@ -19,10 +18,12 @@ Require-Bundle: org.hawk.core;bundle-version="1.2.0",
  org.eclipse.viatra.query.runtime.localsearch;bundle-version="2.0.0",
  org.eclipse.viatra.query.runtime.rete;bundle-version="2.0.0",
  org.eclipse.viatra.query.runtime.rete.recipes;bundle-version="2.0.0",
- org.eclipse.viatra.query.runtime;bundle-version="2.0.0"
+ org.eclipse.viatra.query.runtime;bundle-version="2.0.0",
+ org.hawk.core;bundle-version="1.2.0"
 Import-Package: br.com.embraer.massif.commandevaluation.client,
  br.com.embraer.massif.commandevaluation.exception,
  com.google.common.base;version="15.0.0",
+ com.google.common.collect;version="15.0.0",
  hu.bme.mit.massif.communication,
  hu.bme.mit.massif.communication.command,
  hu.bme.mit.massif.communication.commandevaluation,
@@ -43,6 +44,7 @@ Import-Package: br.com.embraer.massif.commandevaluation.client,
  org.eclipse.emf.compare.utils,
  org.eclipse.emf.ecore.resource,
  org.eclipse.emf.ecore.resource.impl,
+ org.hawk.greycat,
  org.hawk.service.api,
  org.hawk.service.emc,
  org.hawk.service.emf,
@@ -53,4 +55,6 @@ Import-Package: br.com.embraer.massif.commandevaluation.client,
  org.hawk.timeaware.queries.operations.reflective,
  org.hawk.ui.emfresource
 Export-Package: org.hawk.labview;uses:="org.hawk.core.model,org.hawk.core",
- org.hawk.simulink
+ org.hawk.simulink,
+ org.hawk.time,
+ org.hawk.versionaware.queries

@@ -1,0 +1,4 @@
+for (r in Model.allInstancesAt(1436262329000l)){
+Model.getRepository(r).message.println();
+"hi ".println();
+}

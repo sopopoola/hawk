@@ -71,15 +71,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class HawkCompare {
+public class SimCompare {
 	private Resource metamodel;
 	private Resource model1;
 	private Resource model2;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		HawkCompare object = new HawkCompare();
-		File file1 = new File("myhawkx2.localhawkmodel2.xmi");
-		File file2 = new File("myhawkx1.localhawkmodel2.xmi");
+		SimCompare object = new SimCompare();
+		File file1 = new File("C:/Users/student/Desktop/eclipse/test1.xmi");
+		File file2 = new File("C:/Users/student/Desktop/eclipse/test2.xmi");
 		//File file1 = new File("local4.xmi");
 		//File file2 = new File("local3.xmi");
 		File file3 = new File("modelP0.xmi");
@@ -87,7 +87,7 @@ public class HawkCompare {
 		Comparison compare = object.compare(file1, file2);
 		System.out.println("resource  "+compare.eResource());
 		try {
-			File f= new File("summary.txt");
+			File f= new File("C:/Users/student/Desktop/eclipse/summary.txt");
 			if(!f.exists())
 				f.createNewFile();
 			PrintWriter writer = new PrintWriter(f, "UTF-8");
@@ -165,13 +165,13 @@ public class HawkCompare {
 		String xmi1 = file1.getAbsolutePath();
 		String xmi2 = file2.getAbsolutePath();
 		// change to metamodel for simulink
-		//Resource metamodel =loadMetamodel();
 		Resource metamodel =loadMetamodel();
 		Resource model1 = load(xmi1, resourceSet1);
 		Resource model2= load(xmi2, resourceSet2);
 		setResourceMetamodel(metamodel);
 		setResourceModel1(model1);
 		setResourceModel2(model2);
+		/*
 		for (EObject obj: model1.getContents()) {
 			//System.out.println("te" + obj.eContents());
 			for(EObject ob: obj.eContents()) {
@@ -183,11 +183,13 @@ public class HawkCompare {
 				//System.out.println("teggg" + ob.eContents());
 			}
 		}
+		*/
 		//EObject obj = model1.getContents().get(0);
 		//System.out.println(obj.eContents().get(0).eContents());
 		//System.out.println(resourceSet1);
 
 		// Configure EMF Compare
+		/*
 		Function<EObject, String> idFunction = new Function<EObject, String>() {
 			public String apply(EObject input) {
 				//System.out.println("input  "+input.eClass());
@@ -205,7 +207,7 @@ public class HawkCompare {
 				//return "BlockDiagram";
 			}
 		};
-		
+		*/
 		/**
 		 Default matcher
 		IEObjectMatcher matcher = DefaultMatchEngine.createDefaultEObjectMatcher(UseIdentifiers.NEVER);
@@ -224,7 +226,7 @@ public class HawkCompare {
 		return comparator.compare(scope);
 		***/
 		IEObjectMatcher fallBackMatcher = DefaultMatchEngine.createDefaultEObjectMatcher(UseIdentifiers.WHEN_AVAILABLE);
-		IEObjectMatcher customIDMatcher = new IdentifierEObjectMatcher(fallBackMatcher, idFunction);
+		IEObjectMatcher customIDMatcher = new IdentifierEObjectMatcher(fallBackMatcher);
 		 
 		IComparisonFactory comparisonFactory = new DefaultComparisonFactory(new DefaultEqualityHelperFactory());
 		 
@@ -292,22 +294,8 @@ public class HawkCompare {
 				//System.out.println(resourceSet1.getResources());
 		return resourceSet;
 	}
+	
 	private Resource loadMetamodel() {
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore",
-				new EcoreResourceFactoryImpl());
-		ResourceSet resourceSet = new ResourceSetImpl();
-		//URI uri2 = URI.createFileURI("C:/Users/student/git/hawk/labview.ecore");
-		URI uri2 = URI.createFileURI("C:/Users/student/Documents/eclipse/runtime-EclipseApplication/Hawk/labview.ecore");
-
-		Resource r = resourceSet.getResource(uri2, true);
-		//System.out.println(r.getContents());
-		EObject eObject = r.getContents().get(0);
-		
-		EPackage.Registry.INSTANCE.put("http://www.ni.com/LabVIEW.VI", eObject);
-		return r;
-		
-	}
-	private Resource loadSMetamodel() {
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore",
 				new EcoreResourceFactoryImpl());
 		ResourceSet resourceSet = new ResourceSetImpl();
@@ -426,12 +414,7 @@ public class HawkCompare {
 			    return(buf.toString());
 			}
 
-	private String getFileName(String name) {
-		String[] nameList= name.split("\\.");
-		String result= nameList[0] + ".customxml";
-		return result;
-		
-	}
+	
 	public File createEmptyFile(File n) {
 		//File n= new File("empty.xmi");
 		 try {
@@ -453,7 +436,8 @@ public class HawkCompare {
 		Map<String, Integer> pair = new HashMap();
 		int add,move,change,delete,others;
 		ResourceSet resourceSet = new ResourceSetImpl();
-		File f = new File("text.xmi");
+		//File f = new File("text.xmi");
+		/*
 		if(!f.exists()) {
 			try {
 				f.createNewFile();
@@ -462,16 +446,18 @@ public class HawkCompare {
 				e.printStackTrace();
 			}
 		}
-		Resource r =load(f.getAbsolutePath(), resourceSet);
-		System.out.println("new resource" + r.getContents().size());
+		*/
+		//createEmptyFile(f);
+		//Resource r =load(f.getAbsolutePath(), resourceSet);
+		//System.out.println("new resource" + r.getContents().size());
 		add=move=change=delete=others=0;
 		String name;
 		//compare.
-		for (Match m:compare.getMatches()) {
+		//for (Match m:compare.getMatches()) {
 			//System.out.println("m  ");
-		}
+		//}
 		for(Diff d: compare.getDifferences()) {
-			r.getContents().add(d);
+			//r.getContents().add(d);
 			//System.out.println("diff  "+ d.);
 			//System.out.println("  "+d.getClass().getName());
 			if(d instanceof ReferenceChange) {
@@ -528,7 +514,7 @@ public class HawkCompare {
 			else 
 				others++;		
 		}
-		System.out.println("new resource2" + r.getContents().size());
+		//System.out.println("new resource2" + r.getContents().size());
 		writer.println("ADD   "+ add);
 		writer.println("CHANGE   "+ change);
 		writer.println("DELETE   "+ delete);

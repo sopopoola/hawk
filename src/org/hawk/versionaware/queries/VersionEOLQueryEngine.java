@@ -1,6 +1,7 @@
 package org.hawk.versionaware.queries;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
@@ -9,6 +10,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -52,6 +55,7 @@ import org.eclipse.epsilon.eol.execute.operations.contributors.OperationContribu
 import org.hawk.core.IModelIndexer;
 import org.hawk.core.IStateListener.HawkState;
 import org.hawk.core.IVcsManager;
+import org.hawk.core.graph.IGraphIterable;
 import org.hawk.core.graph.IGraphNode;
 import org.hawk.core.graph.IGraphNodeIndex;
 import org.hawk.core.graph.IGraphNodeReference;
@@ -62,6 +66,7 @@ import org.hawk.core.query.InvalidQueryException;
 import org.hawk.core.query.QueryExecutionException;
 import org.hawk.core.runtime.BaseModelIndexer;
 import org.hawk.emfcompare.HawkCompare;
+import org.hawk.emfcompare.SimCompare;
 import org.hawk.emfresource.impl.LocalHawkResourceImpl;
 import org.hawk.epsilon.emc.EOLQueryEngine;
 import org.hawk.epsilon.emc.wrappers.GraphNodeWrapper;
@@ -73,16 +78,23 @@ import org.hawk.service.api.Hawk.Client;
 import org.hawk.service.emc.RemoteHawkModel;
 import org.hawk.service.emf.HawkModelDescriptor;
 import org.hawk.service.emf.impl.HawkResourceFactoryImpl;
+import org.hawk.timeaware.graph.TimeAwareGraphNodeWrapper;
+import org.hawk.timeaware.graph.VCSManagerIndex;
+import org.hawk.timeaware.graph.VCSManagerIndex.RepositoryNode;
 //import org.hawk.service.api.Users$Client;
 import org.hawk.timeaware.queries.TimeAwareEOLOperationFactory;
 import org.hawk.timeaware.queries.TimeAwareEOLQueryEngine;
 import org.hawk.timeaware.queries.operations.reflective.TimeAwareNodeHistoryOperationContributor;
 import org.hawk.timeaware.queries.operations.reflective.TypeHistoryOperationContributor;
 import org.hawk.ui.emfresource.LocalHawkResourceFactoryImpl;
+import org.hawk.greycat.AbstractGreycatDatabase;
+import org.hawk.greycat.GreycatNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Function;;
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;;
 
 public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 	private static final Logger LOGGER = LoggerFactory.getLogger(VersionEOLQueryEngine.class);
@@ -111,6 +123,178 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 		Object[] times = collect.toArray();
 		return allInstancesAt((Long)times[size]);
 	}
+	public String getMessage(long time) throws Exception {
+		Runtime.getRuntime().gc();
+		String message = "";
+		final ITimeAwareGraphDatabase taGraph = (ITimeAwareGraphDatabase) graph;
+		if(time>0) {
+		Date d = new Date(time );
+		for(ITimeAwareGraphNode nd: taGraph.allNodes(ModelElementNode.OBJECT_VERTEX_LABEL, time)) {
+			
+			if (nd.getOutgoingWithType("_hawkFile").iterator().hasNext()) {
+				//System.out.println("this has next  " + nd);
+				//GraphNodeWrapper wrapper = new TimeAwareGraphNodeWrapper(nd, this);
+				//System.out.println("repo node " + getRepository(wrapper));
+				//System.out.println("repo message  "+ getRepository(wrapper).getMessage());
+				ModelElementNode me = new ModelElementNode(nd);
+				String repoURL = me.getFileNode().getRepositoryURL();
+				final RepositoryNode repoNode = new VCSManagerIndex(taGraph).getOrCreateRepositoryNode(repoURL).travelInTime(time);
+				try {
+					
+					//System.out.println("Timepoint:   "+d);
+					message= repoNode.getMessage() + "\n ( Index:"+ repoNode.getRevision()+ "\n  ( Date:"+ d;
+					//message= message + "\n Date:"+ d;
+					//return message;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+			}
+			else 
+				message = "commit not available "+ "\n Date:"+ d;
+			break;
+				
+		}
+		}
+		return message;
+	}
+	public void allTest(){
+		List m =  new ArrayList(getAllInstants());
+		Collections.reverse(m);
+		for(Object instant: m.toArray()) {
+			try {
+				getMessage((Long)instant);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	public void allNewTest() {
+		for(Long instant:getAllInstants() ) {
+			try {
+				getMessage(instant);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	/*
+	public String getMessage(long timepoint) throws Exception {
+		Runtime.getRuntime().gc();
+		final AbstractGreycatDatabase taGraph = (AbstractGreycatDatabase) graph;
+		IGraphIterable<GreycatNode> iterate=taGraph.allNodes(ModelElementNode.OBJECT_VERTEX_LABEL, timepoint);
+		//taGraph.
+		int size= iterate.size();
+		//iterate.iterator().
+		//iterate.
+		System.out.println("size  "+size);
+		if(size>0 && timepoint>0) {
+		//ITimeAwareGraphNode taNode = ((AbstractGreycatDatabase) taGraph.allNodes(ModelElementNode.OBJECT_VERTEX_LABEL, timepoint));
+			//Iterables.getFirst(iterate.iterator(), null);
+		//Iterables.getFirst(iterate, null);
+		for(IGraphNode nd: iterate) {
+			if (nd.getOutgoingWithType("_hawkFile").iterator().hasNext()) {
+				System.out.println("this has next  " + nd);
+				GraphNodeWrapper wrapper = new TimeAwareGraphNodeWrapper(nd, this);
+				System.out.println("repo node " + getRepository(wrapper));
+				System.out.println("repo message  "+ getRepository(wrapper).getMessage());
+				break;
+			}
+			else {
+				System.out.println("this does not have next  "+ nd);
+				GraphNodeWrapper wrapper = new TimeAwareGraphNodeWrapper(nd, this);
+				System.out.println("repo node  "+ getRepository(wrapper));
+				System.out.println("repo message  "+ getRepository(wrapper).getMessage());
+				break;
+			}
+				
+		}
+		ITimeAwareGraphNode taNode = Iterables.get(iterate, 0);
+		//Iterable
+		System.out.println("repositoy" + taNode.getProperty("repository"));
+		//taNode.
+		//taGraph.getFileIndex().travelInTime(timepoint).
+		ModelElementNode me = new ModelElementNode(taNode);
+		System.out.println("model element "+me);
+		
+		System.out.println("file node  "+ me.getFileNode());
+		
+		String repoURL = me.getFileNode().getRepositoryURL();
+		System.out.println("repositorrry" + repoURL);
+		final RepositoryNode repoNode = new VCSManagerIndex(taGraph).getOrCreateRepositoryNode(repoURL);
+		try {
+			Date d = new Date(timepoint );
+			System.out.println("Timepoint:   "+d);
+			String message= repoNode.travelInTime(taNode.getTime()).getMessage();
+			System.out.println("message" + message);
+			return message;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+		return null;
+	}
+	*/
+	public Collection getAllMessage(){
+		Collection<String> message = new ArrayList<String>();
+	
+		for(Long instant: getAllInstants()) {
+			try {
+				message.add(getMessage(instant));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		/*
+		final ITimeAwareGraphDatabase taDB = (ITimeAwareGraphDatabase) graph;
+		try (IGraphTransaction tx = taDB.beginTransaction()) {
+			GraphWrapper gW = new GraphWrapper(taDB);
+			for (MetamodelNode mm : gW.getMetamodelNodes()) {
+				for (TypeNode tn : mm.getTypes()) {
+					ITimeAwareGraphNode taTypeNode = (ITimeAwareGraphNode) tn.getNode();
+					//instants.addAll(taTypeNode.getAllInstants());
+				}
+			}
+			tx.success();
+		} catch (Exception e) {
+			try {
+				throw new QueryExecutionException(e);
+			} catch (QueryExecutionException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		*/
+		return message;
+	}
+	public void getCommit() {
+		File f= new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/HawkSimulink/Model/"+indexer.getName()+"/commit.txt");
+		File folder = new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/HawkSimulink/Model/"+indexer.getName());
+		if(!folder.exists())
+			folder.mkdirs();
+		
+		try {
+			
+			if(!f.exists()) {
+				f.createNewFile();
+			}
+				
+			PrintWriter writer = new PrintWriter(f,"UTF-8");
+			for (Long instant: getAllInstants()) {
+				writer.println(getMessage(instant));
+			}
+			writer.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public void saveModel() {
 		//Client client= new Client();
 		//Client.Factory.class.
@@ -129,8 +313,11 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 		Resource rSource1 = null;
 		File file1 = null;
 		File file2=null;
-		File fd = new File("C:/Users/student/Documents/eclipse/runtime-EclipseApplication/Hawk/model/"+indexer.getName()+"diff.txt");
-		File summary = new File("C:/Users/student/Documents/eclipse/runtime-EclipseApplication/Hawk/model/"+indexer.getName()+"summary.txt");
+		File fd = new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/HawkSimulink/Model/"+indexer.getName()+"/diff.txt");
+		File summary = new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/HawkSimulink/Model/"+indexer.getName()+"/summary.txt");
+		File folder = new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/HawkSimulink/Model/"+indexer.getName());
+		if(!folder.exists())
+			folder.mkdirs();
 		
 		PrintWriter writer2 = null;
 		PrintWriter summaryWriter = null;
@@ -142,7 +329,7 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 			summaryWriter = new PrintWriter(summary, "UTF-8");
 			for(Long instant: getAllInstants()) {
 				num++;
-				f = new File("C:/Users/student/Documents/eclipse/runtime-EclipseApplication/Hawk/model/"+indexer.getName()+num +".localhawkmodel");
+				f = new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/HawkSimulink/Model/"+indexer.getName()+"/version"+num +".localhawkmodel");
 				System.out.println("f   "+ f.getAbsolutePath());
 				if (!f.exists()) {
 					f.createNewFile();
@@ -202,7 +389,7 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 				if (file1!=null && file2!=null) {
 					//writer2.println(file1.getName()+"       "+file2.getName());
 					//System.out.println(file1.getName()+"  the "+ file2.getName());
-					HawkCompare object = new HawkCompare();
+					SimCompare object = new SimCompare();
 					Comparison compare = null;
 					if(num%2==0) {
 						writer2.println(file1.getName()+"       "+file2.getName());
@@ -217,6 +404,7 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 						compare= object.compare(file2, file1);
 					}
 					System.out.println(file1.getName()+"  weee  "+ file2.getName());
+					summaryWriter.println(getMessage(instant));
 					object.getSummary(compare, summaryWriter);
 					for (Diff d:compare.getDifferences()) {
 						if(d instanceof ReferenceChange)
@@ -251,7 +439,7 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 			}
 			
 		}
-		catch (IOException e) {
+		catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			
@@ -296,6 +484,7 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 			}
 		}
 		*/
+		System.out.println("completed");
 	}
 	public Comparison compare(Resource resourceSet1, Resource resourceSet2) {
 		Function<EObject, String> idFunction = new Function<EObject, String>() {

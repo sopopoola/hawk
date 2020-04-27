@@ -8,7 +8,7 @@ public class Matlab {
 		MatlabModelResourceFactory ma= new MatlabModelResourceFactory();
 		System.out.println(ma.getModelExtensions());
 		try {
-			File file = ma.localParse(new File("C:/Users/student/git/hawk/sldemo_clutch_import.mdl"));
+			File file = ma.localParse(new File("C:/Users/student/git/hawk/simulink_projesi.slx"));
 			System.out.println(file);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

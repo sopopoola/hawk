@@ -35,18 +35,8 @@ public class TimeIndexer extends TimeAwareIndexer{
 
 		for (VcsCommitItem s : changedItems) {
 			final String commitPath = s.getPath();
-			System.out.println("committed paths  "+commitPath);
-			int i = commitPath.lastIndexOf('.');
-			System.out.println("i  "+i);
-			//String ext = i > 0 ? name.substring(i + 1) : "";
-			String fName= ("test.slx");
-			IModelResourceFactory mrf = getModelParserFromFilename(fName);
-			System.out.println("delete temporary   "+fName);
-			if(mrf instanceof org.hawk.simulink.MatlabModelResourceFactory) {
-				
-				//((org.hawk.simulink.MatlabModelResourceFactory)mrf).closeFiles();
-				//((org.hawk.simulink.MatlabModelResourceFactory)mrf).clear(fName);
-			} 
+			//System.out.println("committed paths  "+commitPath);
+			
 			if (VERBOSE) {
 				console.println("-->" + commitPath + " HAS CHANGED (" + s.getChangeType()
 						+ "), PROPAGATING CHANGES");
@@ -88,14 +78,23 @@ public class TimeIndexer extends TimeAwareIndexer{
 			
 			String fName= (new File(monitorTempDir)).getName();
 			IModelResourceFactory mrf = getModelParserFromFilename("test.slx");
-			System.out.println("delete temporary   "+fName +"   "+temp.getName());
+			//System.out.println("delete temporary   "+fName +"   "+temp.getName());
 			if(mrf instanceof MatlabModelResourceFactory) {
-				System.out.println("close all files");
+				//System.out.println("close all files");
 				((MatlabModelResourceFactory)mrf).closeFiles();
 				((MatlabModelResourceFactory)mrf).clear();
 			} 
 			
 			console.printerrln("error in deleting temporary temporary local vcs files");
+		}
+		else {
+			IModelResourceFactory mrf = getModelParserFromFilename("test.slx");
+			System.out.println("file deltion successful   "+temp.getName());
+			if(mrf instanceof MatlabModelResourceFactory) {
+				//System.out.println("close all files");
+				((MatlabModelResourceFactory)mrf).closeFiles();
+				((MatlabModelResourceFactory)mrf).clear();
+			} 
 		}
 		return updatersOK;
 	}
