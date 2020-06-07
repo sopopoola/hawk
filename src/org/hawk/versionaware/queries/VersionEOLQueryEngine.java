@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -20,6 +22,16 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.util.BasicEList;
@@ -52,45 +64,50 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.execute.operations.contributors.OperationContributorRegistry;
-import org.hawk.core.IModelIndexer;
-import org.hawk.core.IStateListener.HawkState;
-import org.hawk.core.IVcsManager;
-import org.hawk.core.graph.IGraphIterable;
-import org.hawk.core.graph.IGraphNode;
-import org.hawk.core.graph.IGraphNodeIndex;
-import org.hawk.core.graph.IGraphNodeReference;
-import org.hawk.core.graph.IGraphTransaction;
-import org.hawk.core.graph.timeaware.ITimeAwareGraphDatabase;
-import org.hawk.core.graph.timeaware.ITimeAwareGraphNode;
-import org.hawk.core.query.InvalidQueryException;
-import org.hawk.core.query.QueryExecutionException;
-import org.hawk.core.runtime.BaseModelIndexer;
+import org.eclipse.hawk.core.IModelIndexer;
+import org.eclipse.hawk.core.IStateListener.HawkState;
+import org.eclipse.hawk.core.IVcsManager;
+import org.eclipse.hawk.core.graph.IGraphIterable;
+import org.eclipse.hawk.core.graph.IGraphNode;
+import org.eclipse.hawk.core.graph.IGraphNodeIndex;
+import org.eclipse.hawk.core.graph.IGraphNodeReference;
+import org.eclipse.hawk.core.graph.IGraphTransaction;
+import org.eclipse.hawk.core.graph.timeaware.ITimeAwareGraphDatabase;
+import org.eclipse.hawk.core.graph.timeaware.ITimeAwareGraphNode;
+import org.eclipse.hawk.core.query.InvalidQueryException;
+import org.eclipse.hawk.core.query.QueryExecutionException;
+import org.eclipse.hawk.core.runtime.BaseModelIndexer;
 import org.hawk.emfcompare.HawkCompare;
 import org.hawk.emfcompare.SimCompare;
-import org.hawk.emfresource.impl.LocalHawkResourceImpl;
-import org.hawk.epsilon.emc.EOLQueryEngine;
-import org.hawk.epsilon.emc.wrappers.GraphNodeWrapper;
-import org.hawk.graph.GraphWrapper;
-import org.hawk.graph.MetamodelNode;
-import org.hawk.graph.ModelElementNode;
-import org.hawk.graph.TypeNode;
-import org.hawk.service.api.Hawk.Client;
-import org.hawk.service.emc.RemoteHawkModel;
-import org.hawk.service.emf.HawkModelDescriptor;
-import org.hawk.service.emf.impl.HawkResourceFactoryImpl;
-import org.hawk.timeaware.graph.TimeAwareGraphNodeWrapper;
-import org.hawk.timeaware.graph.VCSManagerIndex;
-import org.hawk.timeaware.graph.VCSManagerIndex.RepositoryNode;
+import org.eclipse.hawk.emfresource.impl.LocalHawkResourceImpl;
+import org.eclipse.hawk.epsilon.emc.EOLQueryEngine;
+import org.eclipse.hawk.epsilon.emc.wrappers.GraphNodeWrapper;
+import org.eclipse.hawk.graph.GraphWrapper;
+import org.eclipse.hawk.graph.MetamodelNode;
+import org.eclipse.hawk.graph.ModelElementNode;
+import org.eclipse.hawk.graph.TypeNode;
+import org.eclipse.hawk.service.api.Hawk.Client;
+import org.eclipse.hawk.service.emc.RemoteHawkModel;
+import org.eclipse.hawk.service.emf.HawkModelDescriptor;
+import org.eclipse.hawk.service.emf.impl.HawkResourceFactoryImpl;
+import org.eclipse.hawk.timeaware.graph.TimeAwareGraphNodeWrapper;
+import org.eclipse.hawk.timeaware.graph.VCSManagerIndex;
+import org.eclipse.hawk.timeaware.graph.VCSManagerIndex.RepositoryNode;
 //import org.hawk.service.api.Users$Client;
-import org.hawk.timeaware.queries.TimeAwareEOLOperationFactory;
-import org.hawk.timeaware.queries.TimeAwareEOLQueryEngine;
-import org.hawk.timeaware.queries.operations.reflective.TimeAwareNodeHistoryOperationContributor;
-import org.hawk.timeaware.queries.operations.reflective.TypeHistoryOperationContributor;
-import org.hawk.ui.emfresource.LocalHawkResourceFactoryImpl;
-import org.hawk.greycat.AbstractGreycatDatabase;
-import org.hawk.greycat.GreycatNode;
+import org.eclipse.hawk.timeaware.queries.TimeAwareEOLOperationFactory;
+import org.eclipse.hawk.timeaware.queries.TimeAwareEOLQueryEngine;
+import org.eclipse.hawk.timeaware.queries.operations.reflective.TimeAwareNodeHistoryOperationContributor;
+import org.eclipse.hawk.timeaware.queries.operations.reflective.TypeHistoryOperationContributor;
+import org.eclipse.hawk.ui.emfresource.LocalHawkResourceFactoryImpl;
+import org.eclipse.hawk.greycat.AbstractGreycatDatabase;
+import org.eclipse.hawk.greycat.GreycatNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
@@ -129,6 +146,7 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 		final ITimeAwareGraphDatabase taGraph = (ITimeAwareGraphDatabase) graph;
 		if(time>0) {
 		Date d = new Date(time );
+		//taGraph.allNodes(ModelElementNode.OBJECT_VERTEX_LABEL, time).getSingle();
 		for(ITimeAwareGraphNode nd: taGraph.allNodes(ModelElementNode.OBJECT_VERTEX_LABEL, time)) {
 			
 			if (nd.getOutgoingWithType("_hawkFile").iterator().hasNext()) {
@@ -278,19 +296,21 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 		File folder = new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/HawkSimulink/Model/"+indexer.getName());
 		if(!folder.exists())
 			folder.mkdirs();
-		
+		PrintWriter writer= null;
 		try {
 			
 			if(!f.exists()) {
 				f.createNewFile();
 			}
 				
-			PrintWriter writer = new PrintWriter(f,"UTF-8");
+			writer = new PrintWriter(f,"UTF-8");
 			for (Long instant: getAllInstants()) {
 				writer.println(getMessage(instant));
 			}
 			writer.close();
 		} catch (Exception e) {
+			if (!(writer.equals(null)))
+				writer.close();
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -572,9 +592,13 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 		final ITimeAwareGraphDatabase taDB = (ITimeAwareGraphDatabase) graph;
 		try (IGraphTransaction tx = taDB.beginTransaction()) {
 			GraphWrapper gW = new GraphWrapper(taDB);
+			//gW.
 			for (MetamodelNode mm : gW.getMetamodelNodes()) {
 				for (TypeNode tn : mm.getTypes()) {
 					ITimeAwareGraphNode taTypeNode = (ITimeAwareGraphNode) tn.getNode();
+					//System.out.println(taTypeNode.getOutgoingWithType("_hawkFile").iterator().hasNext());
+					
+					//taTypeNode.
 					instants.addAll(taTypeNode.getAllInstants());
 				}
 			}
@@ -774,7 +798,252 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 		return ids;
 	}
 	
+	public void saveModelN() {
+
+		
+		File f;
+		int num=0;
+		PrintWriter writer;
+		ResourceSet rs1 = new ResourceSetImpl();
+		Resource rSource = null;
+		Resource rSource1 = null;
+		File file1 = null;
+		File file2=null;
+		Map<String, Integer> pair = new HashMap();
+		int add,move,change,delete,others;
+		String name;
+		File fd = new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/HawkSimulink/Model/"+indexer.getName()+"/diff.txt");
+		File summary = new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/HawkSimulink/Model/"+indexer.getName()+"/summary.txt");
+		File folder = new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/HawkSimulink/Model/"+indexer.getName());
+		if(!folder.exists())
+			folder.mkdirs();
+		
+		PrintWriter writer2 = null;
+		PrintWriter summaryWriter = null;
+		int curi=0;
+		//rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
+		try {
+			//loadMetamodel2();
+			
+			writer2 = new PrintWriter(fd, "UTF-8");
+			summaryWriter = new PrintWriter(summary, "UTF-8");
+			for(Long instant: getAllInstants()) {
+				num++;
+				f = new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/HawkSimulink/Model/"+indexer.getName()+"/version"+num +".localhawkmodel");
+				String fol = "C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/HawkSimulink/Model/"+indexer.getName()+"/version"+num ;
+				System.out.println("fdd   "+ f.getAbsolutePath());
+				if (!f.exists()) {
+					f.createNewFile();
+				}
+				writer = new PrintWriter(f, "UTF-8");
+				writer.println(indexer.getName());
+				writer.print("repos=*\r\n" + 
+							"files=*\r\n");
+				writer.println("timepoint="+instant);	
+				writer.close();
+				rSource = rs1.createResource(URI.createFileURI(f.getPath()));
+				rSource.load(null);
+				Resource rTarget = new XMIResourceImpl(URI.createFileURI(f.getAbsolutePath()+".xmi"));
+				for (Resource r : new ArrayList<>(rs1.getResources())) {
+					rTarget.getContents().addAll(new ArrayList<>(r.getContents()));
+				}
+				rTarget.save(null);
+				File fi = new File(f.getAbsolutePath()+".xmi");
+				if (rTarget.isLoaded()) {
+					rTarget.unload();
+				}
+				if (rSource.isLoaded()) {
+					rSource.unload();
+				}
+				localParse(fi,fol);
+			}
+			//curnum=num;
+			System.out.println("number  "+ num);
+			for(int i=2; i<= num;i++) {
+				add=move=change=delete=others=0;
+				file1 = new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/HawkSimulink/Model/"+indexer.getName()+"/version"+(i-1 )+".localhawkmodel.xmi");
+				file2 = new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/HawkSimulink/Model/"+indexer.getName()+"/version"+i +".localhawkmodel.xmi");				
+				System.out.println(file1.getName()+"  before null  "+ file2.getName());
+				if (file1!=null && file2!=null) {
+					SimCompare object = new SimCompare();
+					Comparison compare = null;
+					writer2.println(file1.getName()+"       "+file2.getName());
+					System.out.println(file1.getName()+"  the  "+ file2.getName());
+						
+					compare= object.compare(file2, file1);
+					//summaryWriter.println(getMessage(instant));
+					//object.getSummary(compare, summaryWriter);
+					for (Diff d:compare.getDifferences()) {
+						if(d instanceof ReferenceChange) {
+							writer2.println("Diff  "+d.getKind() + "  " + ((ReferenceChange) d).getReference().getName()+"  "+d);
+							name=d.getKind()+ " "+((ReferenceChange) d).getReference().getName();
+							//System.out.println(name);
+							if(pair.containsKey(name))
+								pair.replace(name, (pair.get(name)+1));
+							else
+								pair.put(name, 1);
+						}
+						else {
+							writer2.println("Diff  "+d.getKind() + "            " + d);
+							name=d.getKind()+" others";
+							//System.out.println(d.getKind()+"  "+ d);
+							if(pair.containsKey(name))
+								pair.replace(name, (pair.get(name)+1));
+							else
+								pair.put(name, 1);
+						}
+						if(d.getKind().getName().equals("ADD"))
+							add++;
+						else if (d.getKind().getName().equals("DELETE"))
+							delete++;
+						else if (d.getKind().getName().equals("CHANGE"))
+							change++;
+						else if (d.getKind().getName().equals("MOVE"))
+							move++;
+						else 
+							others++;
+						//writer2.println("Diff2  "+d.getKind() + "  " + d);
+					}
+				curi=i;
+				
+				}
+				
+				writer2.println("");
+				writer2.println("");
+				writer2.println("Iteration:  "+num);
+				writer2.println("");
+				summaryWriter.println("ADD   "+ add);
+				summaryWriter.println("CHANGE   "+ change);
+				summaryWriter.println("DELETE   "+ delete);
+				summaryWriter.println("MOVE   "+ move);
+				summaryWriter.println("OTHERS   "+ others);
+				summaryWriter.println(pair);
+				summaryWriter.println("");
+				summaryWriter.println("Iteration:  "+i);
+			}
+			
+		}
+		catch (Exception e) {
+			if((curi+1)<num) {
+				for(int i=(curi+2); i<= num;i++) {
+					file1 = new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/HawkSimulink/Model/"+indexer.getName()+"/version"+(i-1 )+".localhawkmodel.xmi");
+					file2 = new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/HawkSimulink/Model/"+indexer.getName()+"/version"+i +".localhawkmodel.xmi");				
+					if (file1!=null && file2!=null) {
+						SimCompare object = new SimCompare();
+						Comparison compare = null;
+						writer2.println(file1.getName()+"       "+file2.getName());
+						System.out.println(file1.getName()+"  the  "+ file2.getName());
+							
+						compare= object.compare(file2, file1);
+						//summaryWriter.println(getMessage(instant));
+						object.getSummary(compare, summaryWriter);
+						for (Diff d:compare.getDifferences()) {
+							if(d instanceof ReferenceChange) 
+								writer2.println("Diff  "+d.getKind() + "  " + ((ReferenceChange) d).getReference().getName()+"  "+d);
+							else
+								writer2.println("Diff  "+d.getKind() + "            " + d);
+							//writer2.println("Diff2  "+d.getKind() + "  " + d);
+						}
+					//curi=i;
+					
+					}
+				
+				}
+			}
+			
+			e.printStackTrace();
+		}
+		catch (OutOfMemoryError e) {
+			if(writer2!=null) {
+				writer2.close();
+			}
+			if(summaryWriter!=null) {
+				summaryWriter.close();
+			}
+			if (rSource!= null && rSource.isLoaded()) {
+				rSource.unload();
+			}
+			
+		}
+		
+		finally {
+			
+			if (rSource!= null && rSource.isLoaded()) {
+				rSource.unload();
+			}
+			if (rSource1 != null && rSource1.isLoaded()) {
+				rSource1.unload();
+			}
+			if(writer2!=null) {
+				writer2.close();
+			}
+			if(summaryWriter!=null) {
+				summaryWriter.close();
+			}
 	
+		}
+		
+		System.out.println("completed");
+	
+	}
+	
+	public static File localParse(File file, String nm) throws ParserConfigurationException, IOException, SAXException {
+		File f = null;
+		File folder = new File (nm);
+		if (!folder.exists())
+			folder.mkdirs();
+		//File f= new File(t.getAbsoluteFile()+"/newfiles/"+getFileName(file.getName()));
+		//System.out.println("file parser is called");
+		//System.out.println(f.getAbsolutePath());
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	    factory.setIgnoringElementContentWhitespace(true);
+	    factory.setNamespaceAware(true);
+	    DocumentBuilder builder = factory.newDocumentBuilder();
+	    Document doc = builder.parse(file);
+	    NodeList listA= doc.getElementsByTagName("simulink:SimulinkModel");
+	    Node node;
+	    for (int i=0; i< listA.getLength();i++) {
+	    node = (Node) listA.item(i);
+	    
+	    try {
+			//System.out.println(nodeToString(node));
+	    	f = new File (folder.getAbsolutePath()+"/"+file.getName()+i);
+			PrintWriter writer = new PrintWriter(f, "UTF-8");
+			//System.out.println(f.getAbsolutePath());
+			
+			writer.println(nodeToString(node));
+			
+			//f.
+			//System.out.println("test  "+ getFileName(file.getName()));
+			//writer.println("The second line");
+			writer.close();
+		} catch (TransformerException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	    }
+	   // node.
+	    //Element element= (Element)node;
+	   // NodeList list =element.getChildNodes();
+	    //System.out.println();
+	   
+	    //System.out.println(doc.getElementsByTagName("BlockDiagram"));
+	   //// for (int i = 0; i < list.getLength(); i++) {
+            //Node nNode = (Node) list.item(i);
+	    //}
+	    return f;
+	    // Do something with the document here.
+	}
+	
+	private static String nodeToString(Node node)
+			throws TransformerException
+			{
+			    StringWriter buf = new StringWriter();
+			    Transformer xform = TransformerFactory.newInstance().newTransformer();
+			    xform.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+			    xform.transform(new DOMSource(node), new StreamResult(buf));
+			    return(buf.toString());
+			}
 	
 	@Override
 	public String getHumanReadableName() {

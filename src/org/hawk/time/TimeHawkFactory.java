@@ -3,10 +3,10 @@ package org.hawk.time;
 import java.io.File;
 import java.util.List;
 
-import org.hawk.core.IConsole;
-import org.hawk.core.ICredentialsStore;
-import org.hawk.core.IHawk;
-import org.hawk.timeaware.factory.TimeAwareHawkFactory;
+import org.eclipse.hawk.core.IConsole;
+import org.eclipse.hawk.core.ICredentialsStore;
+import org.eclipse.hawk.core.IHawk;
+import org.eclipse.hawk.timeaware.factory.TimeAwareHawkFactory;
 
 public class TimeHawkFactory extends TimeAwareHawkFactory {
 	@Override

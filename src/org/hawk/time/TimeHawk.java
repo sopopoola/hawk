@@ -2,10 +2,10 @@ package org.hawk.time;
 
 import java.io.File;
 
-import org.hawk.core.IConsole;
-import org.hawk.core.ICredentialsStore;
-import org.hawk.core.IHawk;
-import org.hawk.core.IModelIndexer;
+import org.eclipse.hawk.core.IConsole;
+import org.eclipse.hawk.core.ICredentialsStore;
+import org.eclipse.hawk.core.IHawk;
+import org.eclipse.hawk.core.IModelIndexer;
 
 public class TimeHawk implements IHawk {
 	private File location;

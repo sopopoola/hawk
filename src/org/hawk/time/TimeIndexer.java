@@ -6,16 +6,16 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.hawk.core.IConsole;
-import org.hawk.core.ICredentialsStore;
-import org.hawk.core.IFileImporter;
-import org.hawk.core.IModelResourceFactory;
-import org.hawk.core.IModelUpdater;
-import org.hawk.core.IVcsManager;
-import org.hawk.core.VcsCommitItem;
-import org.hawk.core.util.FileOperations;
+import org.eclipse.hawk.core.IConsole;
+import org.eclipse.hawk.core.ICredentialsStore;
+import org.eclipse.hawk.core.IFileImporter;
+import org.eclipse.hawk.core.IModelResourceFactory;
+import org.eclipse.hawk.core.IModelUpdater;
+import org.eclipse.hawk.core.IVcsManager;
+import org.eclipse.hawk.core.VcsCommitItem;
+import org.eclipse.hawk.core.util.FileOperations;
 import org.hawk.simulink.MatlabModelResourceFactory;
-import org.hawk.timeaware.graph.TimeAwareIndexer;
+import org.eclipse.hawk.timeaware.graph.TimeAwareIndexer;
 
 /*
  * *This class works exactly like org.hawk.timeaware indexer

@@ -2,29 +2,29 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.hawk.core.ModelExtensionPoint">
-      <ModelP
-            ModelParser="org.hawk.simulink.MatlabModelResourceFactory">
-      </ModelP>
-   </extension>
-   <extension
-         point="org.hawk.core.HawkFactoryExtensionPoint">
+         point="org.eclipse.hawk.core.HawkFactoryExtensionPoint">
       <hawkFactory
             class="org.hawk.time.TimeHawkFactory"
             name="Time Hawk Factory">
       </hawkFactory>
    </extension>
    <extension
-         point="org.hawk.core.ModelExtensionPoint">
-      <ModelP
-            ModelParser="org.hawk.labview.LabviewModelResourceFactory">
-      </ModelP>
-   </extension>
-   <extension
-         point="org.hawk.core.QueryExtensionPoint">
+         point="org.eclipse.hawk.core.QueryExtensionPoint">
       <query
             query_language="org.hawk.versionaware.queries.VersionEOLQueryEngine">
       </query>
+   </extension>
+   <extension
+         point="org.eclipse.hawk.core.ModelExtensionPoint">
+      <ModelP
+            ModelParser="org.hawk.simulink.MatlabModelResourceFactory">
+      </ModelP>
+   </extension>
+   <extension
+         point="org.eclipse.hawk.core.ModelExtensionPoint">
+      <ModelP
+            ModelParser="org.hawk.labview.LabviewModelResourceFactory">
+      </ModelP>
    </extension>
 
 </plugin>

@@ -8,7 +8,7 @@ public class Matlab {
 		MatlabModelResourceFactory ma= new MatlabModelResourceFactory();
 		System.out.println(ma.getModelExtensions());
 		try {
-			File file = ma.localParse(new File("C:/Users/student/git/hawk/simulink_projesi.slx"));
+			File file = ma.localParse(new File("C:/Users/student/git/hawk/simple_model2.slx"));
 			System.out.println(file);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

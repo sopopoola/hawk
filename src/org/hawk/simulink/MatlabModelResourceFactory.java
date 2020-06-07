@@ -27,11 +27,11 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.viatra.query.runtime.api.ViatraQueryEngineOptions;
 import org.eclipse.viatra.query.runtime.localsearch.matcher.integration.LocalSearchEMFBackendFactory;
 import org.eclipse.viatra.query.runtime.rete.matcher.ReteBackendFactory;
-import org.hawk.core.IFileImporter;
-import org.hawk.core.IModelResourceFactory;
-import org.hawk.core.model.IHawkModelResource;
-import org.hawk.emf.EMFWrapperFactory;
-import org.hawk.emf.model.EMFModelResource;
+import org.eclipse.hawk.core.IFileImporter;
+import org.eclipse.hawk.core.IModelResourceFactory;
+import org.eclipse.hawk.core.model.IHawkModelResource;
+import org.eclipse.hawk.emf.EMFWrapperFactory;
+import org.eclipse.hawk.emf.model.EMFModelResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -71,7 +71,7 @@ public class MatlabModelResourceFactory implements IModelResourceFactory {
 		
 		setupHeadlessEnvironment();
 		try {
-			commandEvaluator = new CommandEvaluatorImpl(new MatlabClient("127.0.0.1", 1098, "MatlabModelProviderr2018b12624"));
+			commandEvaluator = new CommandEvaluatorImpl(new MatlabClient("127.0.0.1", 1098, "MatlabModelProviderr2018b44916"));
 			//commandEvaluator.
 			factory = new MatlabCommandFactory(commandEvaluator);
 			//factory.
@@ -129,7 +129,7 @@ public class MatlabModelResourceFactory implements IModelResourceFactory {
 			System.out.println("try  try");
 			//SimulinkMassifHandler simulinkMassifHandler = new SimulinkMassifHandler(matlabPath);
 			if(commandEvaluator ==null)
-				commandEvaluator = new CommandEvaluatorImpl(new MatlabClient("127.0.0.1", 1098, "MatlabModelProviderr2018b12624"));
+				commandEvaluator = new CommandEvaluatorImpl(new MatlabClient("127.0.0.1", 1098, "MatlabModelProviderr2018b44916"));
 			//commandEvaluator= new MatlabControlEvaluator("C:/Program File/MATLAB/R2017b/bin/matlab", true);
 			if(factory ==null)
 				factory = new MatlabCommandFactory(commandEvaluator);
