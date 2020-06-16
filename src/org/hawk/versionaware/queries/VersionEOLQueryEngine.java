@@ -111,7 +111,7 @@ import org.xml.sax.SAXException;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;;
+import com.google.common.collect.Iterators;
 
 public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 	private static final Logger LOGGER = LoggerFactory.getLogger(VersionEOLQueryEngine.class);

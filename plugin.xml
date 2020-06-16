@@ -26,5 +26,11 @@
             ModelParser="org.hawk.labview.LabviewModelResourceFactory">
       </ModelP>
    </extension>
+   <extension
+         point="org.eclipse.hawk.core.ModelUpdaterExtensionPoint">
+      <model
+            ModelUpdater="org.hawk.time.TimeModelUpdater">
+      </model>
+   </extension>
 
 </plugin>

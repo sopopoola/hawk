@@ -1,24 +1,8 @@
 package org.hawk.simulink;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-//import javax.xml.soap.Node;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -32,12 +16,6 @@ import org.eclipse.hawk.core.IModelResourceFactory;
 import org.eclipse.hawk.core.model.IHawkModelResource;
 import org.eclipse.hawk.emf.EMFWrapperFactory;
 import org.eclipse.hawk.emf.model.EMFModelResource;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
 import br.com.embraer.massif.commandevaluation.client.MatlabClient;
 import br.com.embraer.massif.commandevaluation.exception.MatlabRMIException;
 import hu.bme.mit.massif.communication.ICommandEvaluator;
@@ -49,7 +27,7 @@ import hu.bme.mit.massif.simulink.api.ModelObject;
 import hu.bme.mit.massif.simulink.api.util.ImportMode;
 import hu.bme.mit.massif.simulink.cli.util.CLIInitializationUtil;
 import hu.bme.mit.massif.simulink.cli.util.CLISimulinkAPILogger;
-import org.eclipse.viatra.query.runtime.extensibility.IQuerySpecificationProvider;
+//import org.eclipse.viatra.query.runtime.extensibility.IQuerySpecificationProvider;
 //import uk.ac.aston.log2repo.LocalFolderLogConverter;
 //import uk.ac.aston.log2repo.LogConverter;
 //import uk.ac.aston.log2repo.TimeSliceConverter;
@@ -71,7 +49,7 @@ public class MatlabModelResourceFactory implements IModelResourceFactory {
 		
 		setupHeadlessEnvironment();
 		try {
-			commandEvaluator = new CommandEvaluatorImpl(new MatlabClient("127.0.0.1", 1098, "MatlabModelProviderr2018b44916"));
+			commandEvaluator = new CommandEvaluatorImpl(new MatlabClient("127.0.0.1", 1098, "MatlabModelProviderr2018b21064"));
 			//commandEvaluator.
 			factory = new MatlabCommandFactory(commandEvaluator);
 			//factory.
@@ -129,7 +107,7 @@ public class MatlabModelResourceFactory implements IModelResourceFactory {
 			System.out.println("try  try");
 			//SimulinkMassifHandler simulinkMassifHandler = new SimulinkMassifHandler(matlabPath);
 			if(commandEvaluator ==null)
-				commandEvaluator = new CommandEvaluatorImpl(new MatlabClient("127.0.0.1", 1098, "MatlabModelProviderr2018b44916"));
+				commandEvaluator = new CommandEvaluatorImpl(new MatlabClient("127.0.0.1", 1098, "MatlabModelProviderr2018b21064"));
 			//commandEvaluator= new MatlabControlEvaluator("C:/Program File/MATLAB/R2017b/bin/matlab", true);
 			if(factory ==null)
 				factory = new MatlabCommandFactory(commandEvaluator);
