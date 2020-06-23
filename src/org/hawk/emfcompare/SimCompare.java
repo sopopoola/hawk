@@ -65,6 +65,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.hawk.graph.util.Pair;
+import org.hawk.change.DiffChange;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -82,9 +83,9 @@ public class SimCompare {
 		File file2 = new File("C:/Users/student/Desktop/eclipse/test2.xmi");
 		//File file1 = new File("local4.xmi");
 		//File file2 = new File("local3.xmi");
-		File file3 = new File("modelP0.xmi");
-		File file4 = new File("modelPb0.xmi");
-		Comparison compare = object.compare(file1, file2);
+		File file3 = new File("testA0.xmi");
+		File file4 = new File("testB0.xmi");
+		Comparison compare = object.compare(file3, file4);
 		System.out.println("resource  "+compare.eResource());
 		try {
 			File f= new File("C:/Users/student/Desktop/eclipse/summary.txt");
@@ -522,4 +523,108 @@ public class SimCompare {
 		writer.println("OTHERS   "+ others);
 		writer.println(pair);
 	}
+	
+	public DiffChange getSummary(Comparison compare) {
+		DiffChange diffChange= new DiffChange();
+		Map<String, Integer> pair = new HashMap();
+		int add,move,change,delete,others;
+		ResourceSet resourceSet = new ResourceSetImpl();
+		
+		add=move=change=delete=others=0;
+		String name;
+		EList<Diff> diff = compare.getDifferences();
+		for(Diff d: diff) {
+			//r.getContents().add(d);
+			//System.out.println("diff  "+ d.);
+			//System.out.println("  "+d.getClass().getName());
+			if(d instanceof ReferenceChange) {
+				//System.out.println(d.eContainer());
+				//System.out.println(12);
+				ReferenceChange s= ((ReferenceChange) d);
+				////System.out.println("ghh");
+				EObject val = s.getValue();
+				EReference ref= s.getReference();
+				//System.out.println("mmmm   "+ ref.getEType().eCrossReferences());
+				for(EStructuralFeature attr: ref.eClass().getEAllStructuralFeatures()) {
+					//System.out.println(attr);
+					//System.out.println("twist  "+ref.eClass().eGet(attr));
+					//if(attr.getName().equals("name"))
+						//System.out.println("test  "+ref.eGet(attr));
+					
+				}
+				
+				//System.out.println("reference  " + s.getReference().getEReferenceType());
+				//System.out.println("value  "+ s.getValue().eAllContents());
+				//System.out.println("s  "+s);
+				name=d.getKind()+ " "+((ReferenceChange) d).getReference().getName();
+				//System.out.println(name);
+				if(pair.containsKey(name))
+					pair.replace(name, (pair.get(name)+1));
+				else
+					pair.put(name, 1);
+				
+			}
+			else if(d instanceof AttributeChange) {
+				AttributeChange s= (AttributeChange)d;
+				//System.out.println(s);
+				//System.out.println(s.getAttribute().getName());
+				
+			}
+			else {
+				//System.out.println(d.eContainer());
+				//System.out.println(d.eCrossReferences().size());
+				name=d.getKind()+" others";
+				//System.out.println(d.getKind()+"  "+ d);
+				if(pair.containsKey(name))
+					pair.replace(name, (pair.get(name)+1));
+				else
+					pair.put(name, 1);
+			}
+			if(d.getKind().getName().equals("ADD"))
+				add++;
+			else if (d.getKind().getName().equals("DELETE"))
+				delete++;
+			else if (d.getKind().getName().equals("CHANGE"))
+				change++;
+			else if (d.getKind().getName().equals("MOVE"))
+				move++;
+			else 
+				others++;		
+		}
+		//System.out.println("new resource2" + r.getContents().size());
+		diffChange.setAdd(add);
+		diffChange.setDelete(delete);
+		diffChange.setChange(change);
+		diffChange.setMove(move);
+		diffChange.setDiff(diff);
+		
+		//default type of comparison is modify, can overwrite later e.g (
+		
+		diffChange.setType("modify");
+		return diffChange;
+	}
+	public DiffChange getSummary(File file1, File file2) {
+		Comparison compare = compare(file1, file2);
+		return getSummary(compare);	
+	}
+	public DiffChange getSummary(File file1, String type) {
+		//Comparison compare;
+		File empt= new File ("empty.xmi");
+		DiffChange results = null;
+		File empty = createEmptyFile(empt);
+		if(type.equals("add")) {
+			results= getSummary(empty, file1);
+			results.setType("add");
+		}
+		else if (type.equals("delete")) {
+			results= getSummary(file1, empty);
+			results.setType("delete");
+		}
+		else {
+			results= getSummary(empty, file1);
+		}
+		//Comparison compare = compare(file1, f);
+		return results;	
+	}
+	
 }

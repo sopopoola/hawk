@@ -638,7 +638,7 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 			if (context == null || context.isEmpty()) {
 				// nothing to do!
 			} else {
-				q.setContext(context);
+				//q.setContext(context);
 			}
 		} catch (EolModelLoadingException e) {
 			throw new QueryExecutionException("Loading of EOLQueryEngine failed");

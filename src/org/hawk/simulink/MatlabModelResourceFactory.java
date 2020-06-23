@@ -49,7 +49,7 @@ public class MatlabModelResourceFactory implements IModelResourceFactory {
 		
 		setupHeadlessEnvironment();
 		try {
-			commandEvaluator = new CommandEvaluatorImpl(new MatlabClient("127.0.0.1", 1098, "MatlabModelProviderr2018b21064"));
+			commandEvaluator = new CommandEvaluatorImpl(new MatlabClient("127.0.0.1", 1098, "MatlabModelProviderr2018b15928"));
 			//commandEvaluator.
 			factory = new MatlabCommandFactory(commandEvaluator);
 			//factory.
@@ -107,7 +107,7 @@ public class MatlabModelResourceFactory implements IModelResourceFactory {
 			System.out.println("try  try");
 			//SimulinkMassifHandler simulinkMassifHandler = new SimulinkMassifHandler(matlabPath);
 			if(commandEvaluator ==null)
-				commandEvaluator = new CommandEvaluatorImpl(new MatlabClient("127.0.0.1", 1098, "MatlabModelProviderr2018b21064"));
+				commandEvaluator = new CommandEvaluatorImpl(new MatlabClient("127.0.0.1", 1098, "MatlabModelProviderr2018b15928"));
 			//commandEvaluator= new MatlabControlEvaluator("C:/Program File/MATLAB/R2017b/bin/matlab", true);
 			if(factory ==null)
 				factory = new MatlabCommandFactory(commandEvaluator);
