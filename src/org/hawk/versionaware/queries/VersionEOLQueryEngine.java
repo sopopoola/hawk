@@ -67,6 +67,7 @@ import org.eclipse.epsilon.eol.execute.operations.contributors.OperationContribu
 import org.eclipse.hawk.core.IModelIndexer;
 import org.eclipse.hawk.core.IStateListener.HawkState;
 import org.eclipse.hawk.core.IVcsManager;
+import org.eclipse.hawk.core.graph.IGraphEdge;
 import org.eclipse.hawk.core.graph.IGraphIterable;
 import org.eclipse.hawk.core.graph.IGraphNode;
 import org.eclipse.hawk.core.graph.IGraphNodeIndex;
@@ -77,6 +78,10 @@ import org.eclipse.hawk.core.graph.timeaware.ITimeAwareGraphNode;
 import org.eclipse.hawk.core.query.InvalidQueryException;
 import org.eclipse.hawk.core.query.QueryExecutionException;
 import org.eclipse.hawk.core.runtime.BaseModelIndexer;
+import org.hawk.change.ChangeManager;
+import org.hawk.change.ChangeManager.ChangeNode;
+import org.hawk.change.TestManager;
+import org.hawk.change.TestManager.RepoNode;
 import org.hawk.emfcompare.HawkCompare;
 import org.hawk.emfcompare.SimCompare;
 import org.eclipse.hawk.emfresource.impl.LocalHawkResourceImpl;
@@ -118,7 +123,41 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 	public VersionEOLQueryEngine() {
 		super();
 	}
-
+	public Collection<?> getChildren(Object iNode) {
+		Collection results = new HashSet<>();
+		if (iNode instanceof GraphNodeWrapper) {
+			GraphNodeWrapper gnw = (GraphNodeWrapper) iNode;
+			IGraphNode node = gnw.getNode();
+			
+			for (IGraphEdge edge : node.getOutgoing()) {
+				if ( edge.getProperty("isContainment") != null) {
+					results.add(new GraphNodeWrapper(edge.getEndNode(), this));
+				}
+			}
+			/*
+			for (IGraphEdge edge : node.getIncoming()) {
+				//Object property= edge.getProperty("isContainer");
+				if (edge.getProperty("isContainer") != null) {
+					results.add(new GraphNodeWrapper(edge.getStartNode(), this));
+					//System.out.println("my input  "+ property);
+				}
+			}
+			*/
+		}
+		/**
+		 * 
+		 * for (i in Model.allInstancesAt(1493758683000L)){
+Model.getChildren(i).size().println();
+}
+return 5;
+		 * **/
+		for(Object res:results) {
+			System.out.println(res);
+			
+		}
+	
+		return results;
+	}
 	public Collection<?> getAllVersion() {
 		final Set<Object> allContents = new HashSet<Object>();
 		final Collection<Long> instants = getAllInstants();
@@ -177,6 +216,123 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 		}
 		}
 		return message;
+	}
+	public String getChange(long time) throws Exception {
+		Runtime.getRuntime().gc();
+		String message = "it is getttt";
+		String repoURL="https://github.com/ktalke12/Matlab_MiP";
+		final ITimeAwareGraphDatabase taGraph = (ITimeAwareGraphDatabase) graph;
+		if(time>0) {
+		Date d = new Date(time );
+		//taGraph.allNodes(ModelElementNode.OBJECT_VERTEX_LABEL, time).getSingle();
+		ChangeNode repNode = new ChangeManager(taGraph).getOrCreateChangeNode(repoURL);
+		/*
+		if(repNode != null) {
+			System.out.println("repNode   " +repNode.getNode().getPropertyKeys().size());
+			for(String s: repNode.getNode().getPropertyKeys() ) {
+				System.out.println("for repNode "+  s);
+				System.out.println(repNode.getNode().getProperty(s));
+			}
+			
+			//message= repoNode.getMessage() + " ( model add:"+ repoNode.getModelAdd()+ "\n  modify"+ repoNode.getId();
+		}
+		*/
+		//System.out.println("repNode  "+ repNode.getAdd()+"  "+ repNode.getId());
+		//System.out.println(" "+repNode.);
+		
+		final ChangeNode repoNode = repNode.travelInTime(time);
+		final RepoNode msgNode = new TestManager(taGraph).getOrCreateRepositoryNode(repoURL).travelInTime(time);
+		try {
+			for(String s: msgNode.getNode().getPropertyKeys() ) {
+				System.out.println("message nodes  "+  s);
+				System.out.println(msgNode.getNode().getProperty(s));
+			}
+			if(repoNode != null) {
+				System.out.println("ttttss   " +repoNode.getNode().getPropertyKeys().size());
+				for(String s: repoNode.getNode().getPropertyKeys() ) {
+					System.out.println(s);
+					System.out.println(repoNode.getNode().getProperty(s));
+				}
+				System.out.println("messages  t "+ msgNode.getMessage() );
+				message= repoNode.getMessage() + " ( model add:"+ repoNode.getModelAdd()+ "\n  modify"+ repoNode.getId();
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+		return message;
+	}
+	public void getChanges(String repoURL) {
+		final ITimeAwareGraphDatabase taGraph = (ITimeAwareGraphDatabase) graph;
+		File folder = new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/temp/"+indexer.getName());
+		if(!folder.exists())
+			folder.mkdirs();
+		File f = new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/temp/"+indexer.getName()+"/summary.txt");
+		
+		
+		ChangeNode repNode = new ChangeManager(taGraph).getOrCreateChangeNode(repoURL);
+		ChangeNode repoNode;
+		Date d;
+		try {
+			PrintWriter w= new PrintWriter(f);
+			int version=1;
+				for(Long instant:getAllInstants() ) {
+					repoNode = repNode.travelInTime(instant);
+					d=new Date(instant);
+					if(repoNode != null) {
+						w.println("version   "+ (version++) +"   time:   "+d);
+						for(String s: repoNode.getNode().getPropertyKeys() ) {
+							w.println(s +"     "+ repoNode.getNode().getProperty(s));
+							
+							//System.out.println(s);
+							//System.out.println(repoNode.getNode().getProperty(s));
+						}
+						w.println("");
+						w.println("");
+						
+					}
+					
+				}
+				w.close();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+	}
+	public void allChanges() {
+		String repoUrl= "https://github.com/ktalke12/Matlab_MiP";
+		final ITimeAwareGraphDatabase taGraph = (ITimeAwareGraphDatabase) graph;
+		RepositoryNode repoNode = new VCSManagerIndex(taGraph).getOrCreateRepositoryNode(repoUrl);
+		System.out.println("graph info  "+taGraph.allNodes("_hawkChangerrr").size());
+		Long id= new Long (57);
+		IGraphNode nd = taGraph.getNodeById(id);
+		/*
+		if (nd!= null) {
+			System.out.println("nd exisits" + nd.getPropertyKeys().size());
+			for(String s: nd.getPropertyKeys()) {
+				System.out.println("new key  "+ s);
+			}
+			//ITimeAwareGraphNode cnd = (ITimeAwareGraphNode)nd;
+			ChangeNode d= new ChangeManager(taGraph).getChangeNode(id);
+			if(d!=null)
+				System.out.println("my new stuff  ");
+		}
+		*/
+			
+			//System.out.println("Timepoint:   "+d);
+			//message= repoNode.getMessage() + "\n ( Index:"+ repoNode.getRevision()+ "\n  ( Date:"+ d;
+		for(Long instant:getAllInstants() ) {
+			try {
+				System.out.println("change  "+getChange(instant) +"  time  " + instant);
+				System.out.println("message   "+ repoNode.travelInTime(instant).getMessage());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	public void allTest(){
 		List m =  new ArrayList(getAllInstants());
@@ -625,7 +781,8 @@ public class VersionEOLQueryEngine extends TimeAwareEOLQueryEngine{
 		if (!(m.getGraph() instanceof ITimeAwareGraphDatabase)) {
 			throw new QueryExecutionException(getClass().getName() + " can only be used with time-aware backends");
 		}
-
+		//final ITimeAwareGraphDatabase taDB = (ITimeAwareGraphDatabase) m.getGraph();
+		//taDB.setTime(System.currentTimeMillis());
 		String defaultnamespaces = null;
 		if (context != null) {
 			defaultnamespaces = (String) context.get(PROPERTY_DEFAULTNAMESPACES);

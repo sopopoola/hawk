@@ -11,17 +11,17 @@ public class TimeModelUpdater extends TimeAwareModelUpdater {
 	@Override
 	public GraphModelInserter createInserter() {
 		return new TimeModelInserter(indexer, this::createDeletionUtils, typeCache) {
-		//	@Override
-			//protected double calculateModelDeltaRatio(IGraphNode fileNode, boolean verbose) throws Exception {
-			//	super.calculateModelDeltaRatio(fileNode, verbose);
+			//@Override
+			protected double calculateModelDeltaRatio(IGraphNode fileNode, boolean verbose) throws Exception {
+				super.calculateModelDeltaRatio(fileNode, verbose);
 
 				/*
 				 * We want to always do a transactional update - batch update starts by removing
 				 * every existing node, so we would lose track of the various versions of each
 				 * model element.
 				 */
-				//return 0;
-			//}
+				return 0;
+			}
 		};
 	}
 	@Override

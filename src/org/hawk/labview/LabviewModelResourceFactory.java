@@ -72,7 +72,7 @@ public class LabviewModelResourceFactory implements IModelResourceFactory {
 		//System.out.println("contents");
 		r.load(null);
 		
-		System.out.println(r.getContents());
+		//System.out.println(r.getContents());
 		//System.out.println(file);
 		
 		//r.getContents().add(log);
@@ -99,7 +99,7 @@ public class LabviewModelResourceFactory implements IModelResourceFactory {
 	public static File localParse(File file) throws ParserConfigurationException, IOException, SAXException {
 		File t = new File("");
 		File f= new File(t.getAbsoluteFile()+"/newfiles/"+getFileName(file.getName()));
-		System.out.println("file parser is called");
+		//System.out.println("file parser is called");
 		//System.out.println(f.getAbsolutePath());
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	    //factory.setValidating(true);

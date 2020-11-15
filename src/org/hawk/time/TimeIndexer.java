@@ -31,18 +31,25 @@ import org.eclipse.hawk.core.VcsCommit;
 import org.eclipse.hawk.core.VcsCommitItem;
 import org.eclipse.hawk.core.VcsRepositoryDelta;
 import org.eclipse.hawk.core.graph.IGraphNode;
+import org.eclipse.hawk.core.graph.IGraphTransaction;
 import org.eclipse.hawk.core.graph.timeaware.ITimeAwareGraphDatabase;
 import org.eclipse.hawk.core.model.IHawkModelResource;
 import org.eclipse.hawk.core.runtime.BaseModelIndexer.DefaultFileImporter;
 import org.eclipse.hawk.core.util.FileOperations;
 import org.eclipse.hawk.emf.model.EMFModelResource;
 import org.eclipse.hawk.graph.FileNode;
+import org.hawk.change.ChangeManager;
+import org.hawk.change.ChangeManager.ChangeNode;
 import org.hawk.change.DiffChange;
+import org.hawk.change.TestManager;
+import org.hawk.change.TestManager.RepoNode;
 import org.hawk.emfcompare.SimCompare;
 import org.hawk.simulink.MatlabModelResourceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.eclipse.hawk.timeaware.graph.TimeAwareIndexer;
+import org.eclipse.hawk.timeaware.graph.VCSManagerIndex;
+import org.eclipse.hawk.timeaware.graph.VCSManagerIndex.RepositoryNode;
 
 /*
  * *This class works exactly like org.hawk.timeaware indexer
@@ -137,9 +144,10 @@ public class TimeIndexer extends TimeAwareIndexer{
 								commit.getRevision(), epochMillis, commit.getDelta().getManager().getLocation()));
 							return false;
 						}
-
+						
+						//setIndexedChanges(vcsManager,changes,commit);
 						setIndexedRevision(vcsManager, commit);
-						setIndexedChanges(changes);
+						
 					}
 				}
 			}
@@ -215,7 +223,7 @@ public class TimeIndexer extends TimeAwareIndexer{
 					}
 				}
 				//add changes
-				changes.add(getModel(v,r));
+				//changes.add(getModel(v,r));
 				
 				
 				success = u.updateStore(v, r) && success;
@@ -273,7 +281,7 @@ public class TimeIndexer extends TimeAwareIndexer{
 		
 		deleteditem=new HashSet<VcsCommitItem>(deleteditems);
 		
-		changes.addAll(getDeletedModels(deleteditem));
+		//changes.addAll(getDeletedModels(deleteditem));
 		
 
 		final String monitorTempDir = graph.getTempDir();
@@ -288,7 +296,7 @@ public class TimeIndexer extends TimeAwareIndexer{
 
 		// delete temporary files
 		if (!FileOperations.deleteFiles(new File(monitorTempDir), true)) {
-			
+			/*
 			String fName= (new File(monitorTempDir)).getName();
 			IModelResourceFactory mrf = getModelParserFromFilename("test.slx");
 			//System.out.println("delete temporary   "+fName +"   "+temp.getName());
@@ -297,10 +305,11 @@ public class TimeIndexer extends TimeAwareIndexer{
 				((MatlabModelResourceFactory)mrf).closeFiles();
 				((MatlabModelResourceFactory)mrf).clear();
 			} 
-			
+			*/
 			console.printerrln("error in deleting temporary temporary local vcs files");
 		}
 		else {
+			/*
 			IModelResourceFactory mrf = getModelParserFromFilename("test.slx");
 			System.out.println("file deltion successful   "+temp.getName());
 			if(mrf instanceof MatlabModelResourceFactory) {
@@ -308,6 +317,7 @@ public class TimeIndexer extends TimeAwareIndexer{
 				((MatlabModelResourceFactory)mrf).closeFiles();
 				((MatlabModelResourceFactory)mrf).clear();
 			} 
+			*/
 		}
 		return updatersOK;
 	}
@@ -316,14 +326,17 @@ public class TimeIndexer extends TimeAwareIndexer{
 		IGraphNode fileNode;
 		Set<DiffChange> result= new HashSet<DiffChange>();
 		try {
-		
+		File folder = new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/temp/"+getName());
+		if(!folder.exists())
+			folder.mkdirs();
 		
 		PrintWriter writer;
 		for (VcsCommitItem c: deleteditems) {
 			fileNode = new TimeUtil().getFileNodeFromVCSCommitItem(graph, c);
 			SimCompare compare = new SimCompare();
+			
 			if (fileNode != null) {
-				File f=new File("test"+(num++)+".localhawkmodel");
+				File f=new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/temp/"+getName()+"/testd"+(num++)+".localhawkmodel");
 				FileNode fn= new FileNode(fileNode);
 				writer = new PrintWriter(f, "UTF-8");
 				writer.print("repos="+fn.getRepositoryURL()+"\r\n");
@@ -356,11 +369,14 @@ public class TimeIndexer extends TimeAwareIndexer{
 		IGraphNode fileNode;
 		DiffChange result = null;
 		try {
+			File folder = new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/temp/"+getName());
+			if(!folder.exists())
+				folder.mkdirs();
 		SimCompare compare = new SimCompare();
 		fileNode = new TimeUtil().getFileNodeFromVCSCommitItem(graph, v);
-		File f=new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/temp/test"+num+".localhawkmodel");
-		File f1=new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/temp/testA"+num+".xmi");
-		File f2=new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/temp/testB"+num+".xmi");
+		File f=new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/temp/"+getName()+"/test"+num+".localhawkmodel");
+		File f1=new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/temp/"+getName()+"/testA"+num+".xmi");
+		File f2=new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/temp/"+getName()+"/testB"+num+".xmi");
 		
 		num++;
 		
@@ -369,6 +385,7 @@ public class TimeIndexer extends TimeAwareIndexer{
 		}
 		Resource rTarget1 = new XMIResourceImpl(URI.createFileURI(f1.getAbsolutePath()));
 		//Resource
+		
 		if(u instanceof EMFModelResource) {
 			Resource ref = ((EMFModelResource) u).getResource();
 			//rTarget2.getContents().addAll(new ArrayList<>(ref.getContents()));
@@ -402,7 +419,8 @@ public class TimeIndexer extends TimeAwareIndexer{
 				rTarget.getContents().addAll(new ArrayList<>(r.getContents()));
 			}
 			rTarget.save(null);
-			
+			//rTarget.getAllContents();
+			//fn.getModelElements();
 			if (rTarget.isLoaded()) {
 				rTarget.unload();
 			}
@@ -410,7 +428,7 @@ public class TimeIndexer extends TimeAwareIndexer{
 			if (rSource.isLoaded()) {
 				rSource.unload();
 			}
-			result= compare.getSummary(f2, f1);
+			result= compare.getSummary(f1, f2);
 			
 		}
 		else {
@@ -427,11 +445,39 @@ public class TimeIndexer extends TimeAwareIndexer{
 		}
 		return result;
 	}
-	
-	public void setIndexedChanges(Collection<DiffChange> change) {
-		System.out.println();
-		System.out.println("this is a new indexingchange");
+	public void setIndexedChanges() throws Exception {
+		try (IGraphTransaction tx = graph.beginTransaction()) {
+			TestManager manager = new TestManager((ITimeAwareGraphDatabase) graph);
+			//System.out.println("initial timing   "+((ITimeAwareGraphDatabase) graph).getTime());
+			RepoNode repoNode = manager.getOrCreateRepositoryNode("https://github.com/ktalke12/Matlab_MiP");
+			repoNode.setMessage("this is a test");
+			//repoNode.setDelete(del);
+			//repoNode.setMove(mov);
+			//repoNode.setEdit(chn);
+			//repoNode.setModelAdd(madd);
+			//repoNode.setModelDelete(mdel);
+			//repoNode.setModelEdit(mmod);
+			tx.success();
+		}
+	}
+	public void setIndexedChanges(IVcsManager vcsManager,Collection<DiffChange> change, VcsCommit commit) throws Exception {
+		//if(change.isEmpty())
+		//	return;
+		//System.out.println("repourl  "+ vcsManager.getLocation());
+		int add=0, del=0, mov=0, chn=0, madd=0,mdel=0,mmod=0;
+
+		System.out.println("this is a new indexing change");
 		for(DiffChange d: change) {
+			add=add+d.getAdd();
+			del=del+d.getDelete();
+			chn=chn+d.getChange();
+			mov=mov+d.getMove();
+			if(d.getType().equals("add"))
+				madd++;
+			else if (d.getType().equals("delete"))
+				mdel++;
+			else
+				mmod++;
 			System.out.println("new diff");
 			if(d==null)
 				continue;
@@ -440,6 +486,35 @@ public class TimeIndexer extends TimeAwareIndexer{
 			System.out.println("change  "+d.getChange());
 			System.out.println("move  "+d.getMove());
 			System.out.println("type  "+d.getType());
+		}
+		File f=new File("C:/Users/student/Desktop/eclipse/runtime-EclipseApplication/temp/"+getName()+"/summary"+(num++)+".txt");
+		
+		PrintWriter write= new PrintWriter(f);
+		write.println("Add  "+ add);
+		write.println("Delete  "+ del);
+		write.println("Mov  "+ mov);
+		write.println("Change  "+ chn);
+		write.println("Model Add  "+ madd);
+		write.println("Model Delete  "+ mdel);
+		write.println("Model Modify  "+ mmod);
+		write.println("message  "+ commit.getMessage());
+		write.println("date  "+ commit.getJavaDate());
+		write.close();
+		//ChangeNode repNode = new ChangeManager((ITimeAwareGraphDatabase) graph).getOrCreateChangeNode(add);
+		//System.out.println("confirm savess  "+ repNode.getMessage() + " id  "+ repNode.getId());
+		
+		try (IGraphTransaction tx = graph.beginTransaction()) {
+			ChangeManager manager = new ChangeManager((ITimeAwareGraphDatabase) graph);
+			ChangeNode repoNode = manager.getOrCreateChangeNode(vcsManager.getLocation());
+			//repoNode.setMessage("this is a test");
+			repoNode.setAdd(add);
+			repoNode.setDelete(del);
+			repoNode.setMove(mov);
+			repoNode.setEdit(chn);
+			repoNode.setModelAdd(madd);
+			repoNode.setModelDelete(mdel);
+			repoNode.setModelEdit(mmod);
+			tx.success();
 		}
 		
 		//int add,de

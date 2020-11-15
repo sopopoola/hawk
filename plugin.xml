@@ -15,10 +15,10 @@
       </query>
    </extension>
    <extension
-         point="org.eclipse.hawk.core.ModelExtensionPoint">
-      <ModelP
-            ModelParser="org.hawk.simulink.MatlabModelResourceFactory">
-      </ModelP>
+         point="org.eclipse.hawk.core.QueryExtensionPoint">
+      <query
+            query_language="org.hawk.versionaware.queries.TimelineVersionEOL">
+      </query>
    </extension>
    <extension
          point="org.eclipse.hawk.core.ModelExtensionPoint">

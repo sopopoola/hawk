@@ -264,6 +264,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="WireComment" eSuperTypes="#//Comment">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="AttachedTo" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Test" eSuperTypes="#//Comment">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="AttachedTo" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeObject" eSuperTypes="#//Object">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -351,6 +355,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="IsReadOnly" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="SizeToText" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="p.me" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Literal" eSuperTypes="#//NodeObject">
     <eStructuralFeatures xsi:type="ecore:EReference" name="p.Data" upperBound="-1"
@@ -677,7 +682,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="Math" eSuperTypes="#//Object">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Terminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ConfigurableDataTypeTerminal"
-        eType="#//ConfigurableDataTypeTerminal"/>
+        unique="false" eType="#//ConfigurableDataTypeTerminal"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="VerticalChunkCount" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Strings" eSuperTypes="#//Object">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Terminals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

@@ -613,15 +613,15 @@ public class SimCompare {
 		DiffChange results = null;
 		File empty = createEmptyFile(empt);
 		if(type.equals("add")) {
-			results= getSummary(empty, file1);
+			results= getSummary(file1,empty);
 			results.setType("add");
 		}
 		else if (type.equals("delete")) {
-			results= getSummary(file1, empty);
+			results= getSummary(empty, file1);
 			results.setType("delete");
 		}
 		else {
-			results= getSummary(empty, file1);
+			results= getSummary(file1,empty);
 		}
 		//Comparison compare = compare(file1, f);
 		return results;	

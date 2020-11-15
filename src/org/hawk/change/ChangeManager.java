@@ -20,7 +20,10 @@ import java.util.Collection;
  ******************************************************************************/
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.eclipse.hawk.core.IModelIndexer;
 import org.eclipse.hawk.core.graph.IGraphIterable;
 import org.eclipse.hawk.core.graph.IGraphNode;
 import org.eclipse.hawk.core.graph.timeaware.ITimeAwareGraphDatabase;
@@ -51,6 +54,7 @@ public class ChangeManager {
 		private static final String MOVE_PROPERTY = "move";
 		private static final String DIFF_SUMMARY_PROPERTY = "diffSummary";
 		private static final String DIFF_PROPERTY = "diff";
+		private static final String MESSAGE_PROPERTY= "messages";
 
 		private final ITimeAwareGraphNode node;
 
@@ -61,7 +65,10 @@ public class ChangeManager {
 		public String getURI() {
 			return node.getProperty(URI_PROPERTY) + "";
 		}
-
+		
+		public ITimeAwareGraphNode getNode() {
+			return node;
+		}
 		/**
 		 * Returns the revision indexed for this VCS at its current timepoint, or
 		 * <code>null</code> if it has not been indexed yet.
@@ -80,6 +87,17 @@ public class ChangeManager {
 		 */
 		public void setRevision(String lastRev) {
 			node.setProperty(LASTREV_PROPERTY, lastRev);
+		}
+		public String getMessage() {
+			final Object message = node.getProperty(MESSAGE_PROPERTY);
+			return message == null ? null : message.toString();
+		}
+
+		/**
+		 * Stores the commit message associated with this revision.
+		 */
+		public void setMessage(String message) {
+			node.setProperty(MESSAGE_PROPERTY, message);
 		}
 
 		/**
@@ -102,23 +120,24 @@ public class ChangeManager {
 		/**
 		 * Returns the number of added elements associated with this revision.
 		 */
-		public int getAdd() {
+		public String getAdd() {
 			final Object add = node.getProperty(ADD_PROPERTY);
-			return add == null ? null : (int)add;
+			return add == null ? "0" : add.toString();
 		}
 
 		/**
 		 * Stores the number of added elements associated with this revision.
 		 */
 		public void setAdd(int add) {
-			node.setProperty(ADD_PROPERTY, add);
+			String ad= add+"";
+			node.setProperty(ADD_PROPERTY, ad);
 		}
 		/**
 		 * Returns the commit message associated with this revision.
 		 */
 		public int getDelete() {
 			final Object delete = node.getProperty(DELETE_PROPERTY);
-			return delete == null ? null : (int)delete;
+			return delete == null ? 0 : (int)delete;
 		}
 
 		/**
@@ -132,7 +151,7 @@ public class ChangeManager {
 		 */
 		public int getEdit() {
 			final Object edit = node.getProperty(EDIT_PROPERTY);
-			return edit == null ? null : (int)edit;
+			return edit == null ? 0 : (int)edit;
 		}
 
 		/**
@@ -146,7 +165,7 @@ public class ChangeManager {
 		 */
 		public int getMove() {
 			final Object move = node.getProperty(MOVE_PROPERTY);
-			return move == null ? null : (int)move;
+			return move == null ? 0 : (int)move;
 		}
 
 		/**
@@ -161,7 +180,7 @@ public class ChangeManager {
 		 */
 		public int getModelAdd() {
 			final Object add = node.getProperty(MODEL_ADD_PROPERTY);
-			return add == null ? null : (int)add;
+			return add == null ? 0 : (int)add;
 		}
 
 		/**
@@ -175,7 +194,7 @@ public class ChangeManager {
 		 */
 		public int getModelDelete() {
 			final Object delete = node.getProperty(MODEL_DELETE_PROPERTY);
-			return delete == null ? null : (int)delete;
+			return delete == null ? 0 : (int)delete;
 		}
 
 		/**
@@ -189,7 +208,7 @@ public class ChangeManager {
 		 */
 		public int getModelEdit() {
 			final Object edit = node.getProperty(MODEL_MODIFIED_PROPERTY);
-			return edit == null ? null : (int)edit;
+			return edit == null ? 0 : (int)edit;
 		}
 
 		/**
@@ -203,7 +222,7 @@ public class ChangeManager {
 		 */
 		public String getDiffSummary() {
 			final Object edit = node.getProperty(DIFF_SUMMARY_PROPERTY);
-			return edit == null ? null : (String)edit;
+			return edit == null ? "" : (String)edit;
 		}
 		/**
 		 * Stores the commit message associated with this revision.
@@ -211,20 +230,6 @@ public class ChangeManager {
 		public void setDiffSummary(String edit) {
 			node.setProperty(DIFF_SUMMARY_PROPERTY, edit);
 		}
-		/**
-		 * Stores the commit message associated with this revision.
-		 */
-		public void setDiff(Collection edit) {
-			node.setProperty(DIFF_PROPERTY, edit);
-		}
-		/**
-		 * Returns the commit message associated with this revision.
-		 */
-		public Collection getDiff() {
-			final Object edit = node.getProperty(DIFF_PROPERTY);
-			return edit == null ? null : (Collection)edit;
-		}
-
 		
 		/**
 		 * Returns the underlying node ID.
@@ -241,7 +246,9 @@ public class ChangeManager {
 	 */
 	public ChangeManager(ITimeAwareGraphDatabase db) {
 		this.db = db;
-		this.idx = db.getOrCreateNodeIndex("_hawkChangeIndex");
+		this.idx = db.getOrCreateNodeIndex("_hawkVCSIndex");
+		//db.createNode(props, label)
+		//System.out.println("index  "+idx.);
 	}
 
 	/**
@@ -249,6 +256,7 @@ public class ChangeManager {
 	 * it if it does not exist already.
 	 */
 	public ChangeNode getOrCreateChangeNode(String repoURI) {
+		//String repoURI ="https://github.com/ktalke12/Matlab_MiP";
 		IGraphIterable<? extends IGraphNode> iNode = idx.get(URI_PROPERTY, repoURI);
 		if (iNode.size() > 0) {
 			return new ChangeNode((ITimeAwareGraphNode) iNode.getSingle());
@@ -258,6 +266,53 @@ public class ChangeManager {
 			idx.add(node, URI_PROPERTY, repoURI);
 			return new ChangeNode(node);
 		}
+	}
+	public ChangeNode getOrCreateChangeNode(String uriFragment, String type) {
+		//String repoURI ="https://github.com/ktalke12/Matlab_MiP";
+		IGraphIterable<? extends IGraphNode> iNode = idx.get(URI_PROPERTY, uriFragment);
+		final Map<String, Object> nodeMap = new HashMap<>();
+		nodeMap.put("change", type);
+		nodeMap.put("uriFragment", uriFragment);
+		if (iNode.size() > 0) {
+			return new ChangeNode((ITimeAwareGraphNode) iNode.getSingle());
+		} else {
+			final ITimeAwareGraphNode node = db.createNode(
+				Collections.singletonMap(URI_PROPERTY, uriFragment), "_hawkRepo");
+			idx.add(node, URI_PROPERTY, uriFragment);
+			return new ChangeNode(node);
+		}
+	}
+	public ChangeNode getOrCreateChangeNode(int p) {
+		String repoURI ="_hawkChangder";
+		ChangeNode result;
+		//idx.
+		IGraphIterable<? extends IGraphNode> iNode = idx.get(URI_PROPERTY, repoURI);
+		//idx.
+		if (iNode.size() > 0) {
+			System.out.println("existingttt  node");
+			result= new ChangeNode((ITimeAwareGraphNode) iNode.getSingle());
+		} else {
+			Map map= new HashMap <String,Object>();
+			
+			map.put("add", p);
+			map.put(URI_PROPERTY, repoURI);
+			//final ITimeAwareGraphNode node = db.createNode(
+			//	Collections.singletonMap(URI_PROPERTY, repoURI), "_hawkChanger");
+			final ITimeAwareGraphNode node = db.createNode(
+					map, "_hawkChanger");
+			//idx.add(node, URI_PROPERTY, repoURI);
+			idx.add(node, map);
+			//System.out.println("new node");
+			result =new ChangeNode(node);
+		}
+		//result.setAdd(p);
+		return result;
+	}
+	public ChangeNode getChangeNode( Long id) {
+		IGraphNode nd = db.getNodeById(id);
+		if (nd != null)
+			return new ChangeNode((ITimeAwareGraphNode) nd);
+		return null;
 	}
 
 	/**
